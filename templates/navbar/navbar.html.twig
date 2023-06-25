@@ -1,0 +1,27 @@
+<nav style="">
+    <div style="display:flex; justify-content:space-between; margin:10px 10px">
+        <div>
+            <a href="{{path('app_main')}}">
+                <img src="{{asset('img/logo-garage.png')}}" style="width:200px; align-item:start" />
+            <a>
+        </div>
+        <div style="display:flex; height:70px; align-items:flex-end; gap:30px; justify-content:end">         
+            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER') %}
+                <div>Bonjour {{app.user.name}}</div>
+                <a href="{{path('app_account_user', {id:app.user.id})}}">Mon compte</a>
+            {% endif %}
+            <a href="/help">Besoin d’aide</a>
+            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER') %}
+                <a href="{{path('app_logout')}}">Déconnexion</a>
+            {% endif %}
+        </div>
+    </div>
+    <hr />
+    <p style="text-align:center">Ouvert du Lundi au Vendredi de 8h45 à 12h00 et de 14h00 à 18h00, Samedi de 8h45 à 12h00, Dimanche fermé</p>
+    <div style="background:#333; color:#f1f1f1; height:50px; width:100%; display:flex; align-items:center; justify-content:space-around">
+        <a href="/search/car" style="color:#f1f1f1;">Chercher un véhicule</a>
+        <a href="{{path('app_avis')}}" style="color:#f1f1f1;">
+            <button  class="btn btn-warning">Laisser un avis</button>
+        </a>
+    </div>
+</nav>

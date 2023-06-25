@@ -1,0 +1,24 @@
+{% for car in cars %}
+    <div class="card" style="width: 18rem;">
+        {% if car.image != "" %}
+            <img src="{{ asset("img-cars/"~car.image) }}" class="card-img-top" alt="..." />
+        {% else %}
+            <img src="{{ asset("img-cars/no-image-available.jpg") }}" class="card-img-top" alt="..." />
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title">{{car.marque}}</h5>
+            <p class="card-text">{{car.prix}}€</p>
+            <p>{{car.kilometrage}}km/h</p>
+            <p>{{car.annee}}</p>
+            
+            {# <form action="{{ path('app_change_visibility', {"id":car.id}) }}" method="POST">                  #}
+                {% if car.isActive %}
+                    <a href="{{path('app_change_visibility', {id:car.id})}}" class="btn btn-primary" data-index={{car.id}} id="isActive" data-isActive=true>Active</a>
+                {% else%}
+                    <a href="{{path('app_change_visibility', {id:car.id})}}"  class="btn btn-danger" data-index={{car.id}} id="isActive" data-isActive=false>Disabled</a>
+                {% endif %}
+            {# </form> #}
+        
+        </div>
+    </div>
+{% endfor %}

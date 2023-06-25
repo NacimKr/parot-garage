@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AvisController!{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <h1>Admin</h1>
+
+        <div>
+            <div>
+                <a href="{{path('app_add_cars')}}">Ajouter un véhicules d’occasion</a>
+            </div>
+            <div>
+                <a href="{{path('app_add_services')}}">Ajouter un services à proposer</a>
+            </div>
+            <div>
+                <a href="{{path('app_manage_avis')}}">Gérer les avis</a>
+            </div>
+            <div>
+                <a href="{{path('app_create_promotion')}}">Créer une promotion</a>
+            </div>
+            <div>
+                <a href="{{path('app_modify_hours')}}">Modifier les horaires d’ouvertures</a>
+            </div>
+            <div>
+                <a href="{{path('app_create_account')}}">Créer un compte</a>
+            </div>
+        </div>
+    {% endif %}
+
+
+
+
+
+
+
+    {% if is_granted('ROLE_EMPLOYEE') %}
+        <h1>Employee</h1>
+        {% include "./component/_search_data.html.twig" %}
+        
+        <div class="d-flex flex-wrap gap-4 justify-content-center" id="content-cars">
+            {% include "./component/_search_filter.html.twig" %}
+            
+        </div>
+
+    {% endif %}
+
+
+
+
+
+
+{% endblock %}

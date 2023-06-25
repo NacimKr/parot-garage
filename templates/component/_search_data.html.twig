@@ -1,0 +1,37 @@
+{# {% if form %}
+
+
+	{{ form_start(form) }} #}
+        <div class="row">
+
+            <div class="d-flex justify-content-center gap-5 bg-secondary w-100">
+                <form id="filters">
+                    <div class="col">
+                        <input type="text" class="form-control" id="input-search" name="marque" value="" />
+                    </div>
+                    <div>
+                        <label for="kilometrage">Kilométrage</label>
+                        <input type="range" id="input-search" name="kilometrage" min="10000" max="50000" value="25000">
+                    </div>
+                    <div>
+                        <label for="prix">Prix</label>
+                        <input type="range" id="input-search" name="prix" min="1000" max="10000" value="5000">
+                    </div>
+                    <div>
+                        <label for="annee">Annéé</label>
+                        <input type="range" id="input-search" name="annee" min="2000" max="2023" value="2017">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+{# 
+                {{ form_row(form.kilometrage, {'label': "Kilometrage", 'class':"input-kilometrage" }) }}
+
+                {{ form_row(form.prix, {'label': "Prix", 'class':"input-prix"}) }}
+
+                {{ form_row(form.annee, {'label': "Année", 'class':"input-annee"}) }} #}
+            </div>
+        </div>
+	{# {{ form_end(form) }}
+
+
+{% endif %} #}

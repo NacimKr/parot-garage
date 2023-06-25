@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="my-5">
+            <h1>Votre compte</h1>
+        </div>
+        <form action="">
+            <div class="mb-3">
+                <label for="exampleInputEmail" class="form-label">Email</label>
+                <input class="form-control" type="text" value={{employee.email}} disabled>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputName" class="form-label">Name</label>
+                <input class="form-control" type="text" value={{employee.name}} disabled>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputFirstName" class="form-label">First Name</label>
+                <input class="form-control" type="text" value={{employee.firstName}} disabled>
+            </div>
+        </form>
+        {# <p>{{ employee.email }}</p>
+        <p>{{ employee.name }}</p>
+        <p>{{ employee.firstName }}</p> #}
+    </div>
+    {# {{dump(employee)}} #}
+
+{% endblock %}

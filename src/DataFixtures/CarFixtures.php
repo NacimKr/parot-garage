@@ -18,7 +18,7 @@ class CarFixtures extends Fixture
 
             $car->setMarque('marque'.$i)
                 ->setPrix(rand(1000,10000))
-                ->setImage('image'.$i)
+                ->setImage('')
                 ->setKilometrage(rand(10000, 50000))
                 ->setAnnee(rand(2000, 2023))
                 ->setIsActive(rand(0,1) ? true : false);

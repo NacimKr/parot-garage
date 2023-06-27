@@ -10,8 +10,10 @@ use App\Form\CarType;
 use App\Form\EmployeeType;
 use App\Trait\traitHours;
 use App\Form\SearchType;
+use App\Repository\AvisRepository;
 use App\Repository\CarRepository;
 use App\Repository\HoursRepository;
+use App\Repository\ServicesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,6 +29,8 @@ class MainController extends AbstractController
         CarRepository $carRepository, 
         Request $request, 
         EntityManagerInterface $em,
+        ServicesRepository $servicesRepository,
+        AvisRepository $avisRepository,
         HoursRepository $hoursRepository
         ): Response
     {
@@ -38,7 +42,8 @@ class MainController extends AbstractController
         // dump($annee);
         
         $hours = traitHours::getHours($hoursRepository);
-
+        $services = $servicesRepository->findAll();
+        $avis = $avisRepository->findAll();
         $cars = $carRepository->findByCars($marque =null, $kilometrage, $annee, $prix);
 
         if($request->get('ajax')){
@@ -48,7 +53,7 @@ class MainController extends AbstractController
         }
 
         return $this->render('main/index.html.twig', compact(
-            'cars', "hours"
+            'cars', "hours", "services", "avis"
         ));
     }
 

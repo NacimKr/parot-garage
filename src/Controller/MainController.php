@@ -8,8 +8,10 @@ use App\Entity\Employee;
 use App\Form\AvisType;
 use App\Form\CarType;
 use App\Form\EmployeeType;
+use App\Trait\traitHours;
 use App\Form\SearchType;
 use App\Repository\CarRepository;
+use App\Repository\HoursRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +23,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class MainController extends AbstractController
 {
     #[Route('/', name: 'app_main')]
-    public function index(CarRepository $carRepository, Request $request, EntityManagerInterface $em): Response
+    public function index(
+        CarRepository $carRepository, 
+        Request $request, 
+        EntityManagerInterface $em,
+        HoursRepository $hoursRepository
+        ): Response
     {
         //Je recupère les valeurs de mes filtres
         $marque = $request->get('marque');
@@ -30,6 +37,8 @@ class MainController extends AbstractController
         $annee = $request->get('annee');
         // dump($annee);
         
+        $hours = traitHours::getHours($hoursRepository);
+
         $cars = $carRepository->findByCars($marque =null, $kilometrage, $annee, $prix);
 
         if($request->get('ajax')){
@@ -39,7 +48,7 @@ class MainController extends AbstractController
         }
 
         return $this->render('main/index.html.twig', compact(
-            'cars'
+            'cars', "hours"
         ));
     }
 
@@ -73,28 +82,41 @@ class MainController extends AbstractController
 
 
     #[Route('/login', name: 'app_login')]
-    public function login(Request $request): Response
+    public function login(Request $request, HoursRepository $hoursRepository): Response
     {
         $form = $this->createForm(EmployeeType::class);
-        return $this->render('main/login.html.twig', compact('form'));
+        $hours = traitHours::getHours($hoursRepository);
+        return $this->render('main/login.html.twig', compact('form','hours'));
     }
 
 
 
     #[Route('/help', name: 'app_help')]
-    public function help(): Response
+    public function help(HoursRepository $hoursRepository): Response
     {
+        $hours = traitHours::getHours($hoursRepository);
         return $this->render('main/help.html.twig');
     }
 
 
 
     #[Route('/contact', name: 'app_contact')]
-    public function contact(): Response
+    public function contact(HoursRepository $hoursRepository): Response
     {
+        $hours = traitHours::getHours($hoursRepository);
         return $this->render('main/contact.html.twig');
     }
 
+
+
+    // #[Route('/', name: '')]
+    // public function footer(HoursRepository $hoursRepository): Response
+    // {
+
+    //     return $this->render('footer/footer.html.twig', [
+    //         "hours" => $hoursRepository->findAll()
+    //     ]);
+    // }
 
 
     #[Route('/avis', name: 'app_avis')]

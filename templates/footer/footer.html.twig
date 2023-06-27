@@ -1,11 +1,39 @@
-<div style="background:crimson; height:70px; width:100%; position:absolute; bottom:5; top:100">
-    <div style="display:flex; justify-content:center; align-items:center;  height:70px; width:100%">
-        <div style="margin-right:30px">Recevez nos news en vous inscrivant à notre newsletter</div>
+<div style="background:crimson; width:100%;">
+    <div style="display:flex; justify-content:center; align-items:center;">
+        <div style="margin:30px 10px 10px 10px">Recevez nos news en vous inscrivant à notre newsletter</div>
         <form action="">
             <div style="display:flex; justify-content:center; align-items:center;">
             <input type="text" class="form-control w-75">
             <button type="submit" class="btn btn-danger border">Soumettre</button>
             </div>
         </form>
+
     </div>
+        <div class="container">
+            <div class="d-flex justify-content-between text-light">
+                <div>
+                    <img src="{{asset('img/logo-garage-V2.png')}}" alt="" style="width:350px">
+                </div>
+                <div>
+                    <h3>Horaires</h3>
+                    <ul style="list-style:none">
+                    {% if hours is defined  %}
+                        {% for hour in hours %}
+                            {% if hour.matinOpen %}
+                                <li>
+                                    {{hour.days.name}} : {{hour.matinOpen}} - {{hour.matinClose}}, {{hour.apremOpen}} - {{hour.apremClose}}
+                                </li>
+                            {% else %}
+                                <li>
+                                    {{hour.days.name}} : Fermé
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <p>test</p>
+                    {% endif  %}
+                    </ul>
+                </div>
+            </div>
+        </div>
 </div>

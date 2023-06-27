@@ -3,11 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Car;
+use App\Entity\Hours;
 use App\Entity\Promotion;
+use App\Entity\Week;
 use App\Form\CarType;
 use App\Form\EmployeeType;
+use App\Form\HoursType;
 use App\Form\PromotionType;
 use App\Form\ServiceType;
+use App\Repository\HoursRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -112,11 +116,32 @@ class AdminController extends AbstractController
     }
 
 
-    #[Route('/modify/hours', name: 'app_modify_hours')]
-    public function modifyHours(): Response
+    #[Route('/hours', name: 'app_modify_hours')]
+    public function hours(HoursRepository $hoursRepository): Response
     {
-        return $this->render('admin/modify-hours.html.twig', [
-            'controller_name' => 'AdminController',
+
+        return $this->render('admin/modify-hours.html.twig',[
+            "hours" => $hoursRepository->findAll()
+        ]);
+    }
+
+
+    #[Route('/hours/{id}', name: 'app_modify_hours_2')]
+    public function modifyHours(Hours $hours, Request $request, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(HoursType::class, $hours);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $em->persist($hours);
+            $em->flush();
+            return $this->redirectToRoute('app_modify_hours');
+        }
+
+        return $this->render('admin/form-hours.html.twig',[
+            "hours" => $hours,
+            "form" => $form
         ]);
     }
 

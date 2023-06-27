@@ -4,4 +4,37 @@
 
 {% block body %}
     <h1>Modifier les horaires d'ouvertures</h1>
+        <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Matin</th>
+                    <th scope="col">Matin</th>
+                    <th scope="col">Après-midi</th>
+                    <th scope="col">Après-midi</th>
+                    <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+            {% for hour in hours %}
+                  <tbody>
+                        <tr>
+                            <th scope="row">{{hour.days.name}}</th>
+                            <td>{{hour.matinopen}}</td>
+                            <td>{{hour.matinclose}}</td>
+                            <td>{{hour.apremopen}}</td>
+                            <td>{{hour.apremclose}}</td>
+                            
+                            {% if hour.days.name == "Dimanche" %}
+                                <td>
+                                    <a href={{path('app_modify_hours_2', {id:hour.id})}} class="btn btn-warning disabled">Modifier</a>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <a href={{path('app_modify_hours_2', {id:hour.id})}} class="btn btn-warning">Modifier</a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    </tbody>
+            {% endfor %}
+        </table>
 {% endblock %}

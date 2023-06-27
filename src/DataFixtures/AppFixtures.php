@@ -41,6 +41,7 @@ class AppFixtures extends Fixture
     public function getDependencies()
     {
         return [
+            WeekFixtures::class,
             PromotionFixtures::class,
         ];
     }

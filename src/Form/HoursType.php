@@ -31,9 +31,21 @@ class HoursType extends AbstractType
                     'pattern' => '/^([01]\d|2[0-3]):([0-5]\d)$/'
                     ])],
             ])
-            ->add('matin_close',null)
-            ->add('aprem_open',null)
-            ->add('aprem_close',null)
+            ->add('matin_close',null,[
+                'constraints' => [new Regex([
+                    'pattern' => '/^([01]\d|2[0-3]):([0-5]\d)$/'
+                    ])],
+            ])
+            ->add('aprem_open',null,[
+                'constraints' => [new Regex([
+                    'pattern' => '/^([01]\d|2[0-3]):([0-5]\d)$/'
+                    ])],
+            ])
+            ->add('aprem_close',null,[
+                'constraints' => [new Regex([
+                    'pattern' => '/^([01]\d|2[0-3]):([0-5]\d)$/'
+                    ])],
+            ])
             ->add('submit', SubmitType::class)
         ;
     }

@@ -14,7 +14,8 @@ class AvisFixtures extends Fixture
             $avis = new Avis();
             $avis->setNom('avis n°'.$i)
                 ->setDescription('Lorem ipsum dolor sit amet')
-                ->setNote(rand(1,5));
+                ->setNote(rand(1,5))
+                ->setIsactive(rand(0,1) === 1 ? 1 : 0);
 
             $manager->persist($avis);
             $manager->flush();

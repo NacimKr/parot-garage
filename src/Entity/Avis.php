@@ -23,6 +23,9 @@ class Avis
     #[ORM\Column]
     private ?int $note = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isactive = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +63,18 @@ class Avis
     public function setNote(int $note): static
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    public function isIsactive(): ?bool
+    {
+        return $this->isactive;
+    }
+
+    public function setIsactive(?bool $isactive): static
+    {
+        $this->isactive = $isactive;
 
         return $this;
     }

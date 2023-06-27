@@ -43,7 +43,7 @@ class MainController extends AbstractController
         
         $hours = traitHours::getHours($hoursRepository);
         $services = $servicesRepository->findAll();
-        $avis = $avisRepository->findAll();
+        $avis = $avisRepository->findBy(['isactive' => true]);
         $cars = $carRepository->findByCars($marque =null, $kilometrage, $annee, $prix);
 
         if($request->get('ajax')){

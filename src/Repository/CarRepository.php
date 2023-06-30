@@ -46,32 +46,26 @@ class CarRepository extends ServiceEntityRepository
         ?int $prix,
     ):array
     {
-        $cars = $this->createQueryBuilder("c");
+        $conn = $this->getEntityManager()->getConnection();
 
-        //Utiliser la clause LIKE pour voir s'il contient le mot recherhces
-        if(isset($marque)){
-            //Rechercuqe par nom
-            $cars->andWhere('c.marque LIKE :val')
-                ->setParameter(':val', "%".$marque."%");
-        }
-        
-        if(isset($kilometrage)){
-            //Rechercuqe par kilometrage
-            $cars->andWhere('c.kilometrage >= :val')
-                ->setParameter(':val', $kilometrage);
-        }elseif(isset($annee)){
-            //Rechercuqe par année
-            $cars->andWhere('c.annee >= :val')
-                ->setParameter(':val', $annee);
-        }elseif(isset($prix)){
-            //Rechercuqe par prix
-            $cars->andWhere('c.prix >= :val')
-                ->setParameter(':val', $prix);
-        }
-    
+        $sql = '
+            SELECT * FROM car c
+            WHERE c.kilometrage >= :kilometrage AND 
+            c.annee >= :annee AND c.prix >= :prix AND 
+            c.marque LIKE :marque AND c.is_active IS NOT NULL
+            ';
 
-        $cars = $cars->getQuery()->getResult();
-        return $cars;
+        $resultSet = $conn->executeQuery($sql, 
+            [
+                'kilometrage' => $kilometrage,
+                'annee' => $annee,
+                'prix' => $prix,
+                'marque' => "%".$marque."%",
+            ]
+        );
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();;
     }
 
 
@@ -87,7 +81,8 @@ class CarRepository extends ServiceEntityRepository
         $sql = '
             SELECT * FROM car c
             WHERE c.kilometrage >= :kilometrage AND 
-            c.annee >= :annee AND c.prix >= :prix AND c.is_active = :isActive AND marque LIKE :marque
+            c.annee >= :annee AND c.prix >= :prix AND 
+            c.is_active = :isActive AND marque LIKE :marque
             ';
 
         $resultSet = $conn->executeQuery($sql, 

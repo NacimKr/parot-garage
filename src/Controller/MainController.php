@@ -50,8 +50,8 @@ class MainController extends AbstractController
         // dump($annee);
         
         $hours = $this->repositoryHours->findAll();
-        $services = $servicesRepository->findAll();
-        $avis = $avisRepository->findBy(['isactive' => true]);
+        // $services = $servicesRepository->findAll();
+        // $avis = $avisRepository->findBy(['isactive' => true]);
         $cars = $carRepository->findByCars($marque, $kilometrage, $annee, $prix);
 
         if($request->get('ajax')){
@@ -61,7 +61,7 @@ class MainController extends AbstractController
         }
 
         return $this->render('main/index.html.twig', compact(
-            'cars', "hours", "services", "avis"
+            'cars', "hours"
         ));
     }
 

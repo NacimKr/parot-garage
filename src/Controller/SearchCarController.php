@@ -41,7 +41,8 @@ class SearchCarController extends AbstractController
 
         if($request->get('ajax')){
             return new JsonResponse([
-                'content' => $this->renderView('component/_search_filter.html.twig', compact('cars'))
+                'content' => $this->renderView('component/_search_filter.html.twig', compact('cars')),
+                'data' => $cars
             ]);
         }
 

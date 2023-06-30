@@ -4,22 +4,9 @@
 
 {% block body %}
     <h1>Recherche de véhicule</h1>
-    <div class="d-flex justify-content-center gap-3 flex-wrap">
-        {% for car in cars %}
-            <div class="card" style="width: 18rem;">
-            {% if car.image != "" %}
-                <img src="{{ asset("img-cars/"~car.image) }}" class="card-img-top" alt="..." />
-            {% else %}
-                <img src="{{ asset("img-cars/no-image-available.jpg") }}" class="card-img-top" alt="..." />
-            {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">{{car.marque}}</h5>
-                    <p class="card-text">{{car.prix}}€</p>
-                    <p>{{car.kilometrage}}km/h</p>
-                    <p>{{car.annee}}</p>
-                    <a href="" class="btn btn-danger">Voir plus</a>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+        {% include "./component/_search_data.html.twig" %}
+        
+        <div class="d-flex flex-wrap gap-4 justify-content-center" id="content-cars">
+            {% include "./component/_search_filter.html.twig" %}
+        </div>
 {% endblock %}

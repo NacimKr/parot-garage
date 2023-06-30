@@ -4,4 +4,20 @@
 
 {% block body %}
     <h1>Manage Avis</h1>
+    <div class="d-flex justify-content-center gap-3 flex-wrap my-3">
+        {% for avi in avis %}
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{avi.nom}}</h5>
+                    <p class="card-text">{{avi.description}}</p>
+                    <p>{{avi.note}}</p>
+                    {% if avi.isActive %}
+                        <a href="{{path('app_manage_avis_modify', {id:avi.id})}}" class="btn btn-primary" data-index={{avi.id}} id="isActive-avis" data-isActive=true>Active</a>
+                    {% else%}
+                        <a href="{{path('app_manage_avis_modify', {id:avi.id})}}"  class="btn btn-danger" data-index={{avi.id}} id="isActive-avis" data-isActive=false>Disabled</a>
+                    {% endif %}                
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

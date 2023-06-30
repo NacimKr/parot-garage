@@ -66,7 +66,43 @@ class CarRepository extends ServiceEntityRepository
             $cars->andWhere('c.prix <= :val')
                 ->setParameter(':val', $prix);
         }
+    
 
+        $cars = $cars->getQuery()->getResult();
+        return $cars;
+    }
+
+
+    public function findByCars2(
+        ?string $value = null, 
+        ?int $kilometrage = null,
+        ?int $annee = null,
+        ?int $prix = null,
+    ):array
+    {
+        $cars = $this->createQueryBuilder("c")
+                ->andWhere('c.isActive = :val')
+                ->setParameter(':val', 1);
+
+        //Utiliser la clause LIKE pour voir s'il contient le mot recherches
+        if($value !== null){
+            //Recherche par nom
+            $cars->andWhere('c.marque LIKE :val')
+                ->setParameter(':val', "%{$value}%");
+        }elseif(isset($kilometrage)){
+            //Recherche par kilometrage
+            $cars->andWhere('c.kilometrage <= :kilometrage')
+                ->setParameter(':kilometrage', $kilometrage);
+        }elseif(isset($annee)){
+            //Recherche par année
+            $cars->andWhere('c.annee <= :annee')
+                ->setParameter(':annee', $annee);
+        }elseif(isset($prix)){
+            //Recherche par prix
+            $cars->andWhere('c.prix <= :prix')
+                ->setParameter(':prix', $prix);
+        }
+    
         $cars = $cars->getQuery()->getResult();
         return $cars;
     }

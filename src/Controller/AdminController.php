@@ -2,15 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Avis;
 use App\Entity\Car;
 use App\Entity\Hours;
 use App\Entity\Promotion;
+use App\Entity\Services;
 use App\Entity\Week;
 use App\Form\CarType;
 use App\Form\EmployeeType;
 use App\Form\HoursType;
 use App\Form\PromotionType;
 use App\Form\ServiceType;
+use App\Repository\AvisRepository;
 use App\Repository\HoursRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -78,10 +81,18 @@ class AdminController extends AbstractController
 
 
     #[Route('/add/services', name: 'app_add_services')]
-    public function addServices(): Response
+    public function addServices(EntityManagerInterface $em, Request $request): Response
     {
+        $services = new Services();
+        $form = $this->createForm(ServiceType::class, $services);
+        $form->handleRequest($request);
 
-        $form = $this->createForm(ServiceType::class);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $em->persist($data);
+            $em->flush();
+            return $this->redirectToRoute('app_main');
+        }
 
         return $this->render('admin/add-services.html.twig', [
             'form' => $form,
@@ -90,12 +101,27 @@ class AdminController extends AbstractController
 
 
     #[Route('/manage/avis', name: 'app_manage_avis')]
-    public function manageAvis(): Response
+    public function manageAvis(AvisRepository $avisRepository): Response
     {
+        $avis = $avisRepository->findAll();
         return $this->render('admin/manage-avis.html.twig', [
-            'controller_name' => 'AdminController',
+            'avis' => $avis
         ]);
     }
+
+    #[Route('/manage/avis/{id}', name: 'app_manage_avis_modify', methods:["POST"])]
+    public function manageAndModifyAvis(EntityManagerInterface $em, Avis $avis)
+    {
+        $avisChangeActive = $avis->isIsactive();
+        $avis = $avis->setIsactive(!$avisChangeActive);
+        $em->persist($avis);
+        $em->flush();
+
+        return $this->json([
+            "avis" => $avis
+        ]);
+    }
+
 
 
     #[Route('/create/promotion', name: 'app_create_promotion')]

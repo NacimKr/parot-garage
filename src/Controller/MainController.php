@@ -24,6 +24,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class MainController extends AbstractController
 {
+
+    private $repositoryHours;
+
+    public function __construct(HoursRepository $repositoryHours)
+    {
+        $this->repositoryHours = $repositoryHours;
+    }
+
     #[Route('/', name: 'app_main')]
     public function index(
         CarRepository $carRepository, 
@@ -41,7 +49,7 @@ class MainController extends AbstractController
         $annee = $request->get('annee');
         // dump($annee);
         
-        $hours = traitHours::getHours($hoursRepository);
+        $hours = $this->repositoryHours->findAll();
         $services = $servicesRepository->findAll();
         $avis = $avisRepository->findBy(['isactive' => true]);
         $cars = $carRepository->findByCars($marque =null, $kilometrage, $annee, $prix);
@@ -62,6 +70,7 @@ class MainController extends AbstractController
     #[Route('/account/user/{id}', name:"app_account_user")]
     public function accountUser(Employee $employee):Response
     {
+        $hours = $this->repositoryHours->findAll();
         return $this->render('component/_account_user.html.twig', [
             "employee" => $employee
         ]);
@@ -73,7 +82,7 @@ class MainController extends AbstractController
     public function changeVisibility(Request $request,CarRepository $carRepository, $id, EntityManagerInterface $em):JsonResponse
     {
         $cars = $carRepository->find($id);
-        
+        $hours = $this->repositoryHours->findAll();
         $getValue = json_decode($request->getContent());
         $cars->setIsActive(!$cars->isIsActive());
         $em->persist($cars);
@@ -89,6 +98,7 @@ class MainController extends AbstractController
     #[Route('/login', name: 'app_login')]
     public function login(Request $request, HoursRepository $hoursRepository): Response
     {
+        $hours = $this->repositoryHours->findAll();
         $form = $this->createForm(EmployeeType::class);
         $hours = traitHours::getHours($hoursRepository);
         return $this->render('main/login.html.twig', compact('form','hours'));
@@ -99,7 +109,7 @@ class MainController extends AbstractController
     #[Route('/help', name: 'app_help')]
     public function help(HoursRepository $hoursRepository): Response
     {
-        $hours = traitHours::getHours($hoursRepository);
+        $hours = $this->repositoryHours->findAll();
         return $this->render('main/help.html.twig');
     }
 
@@ -108,21 +118,9 @@ class MainController extends AbstractController
     #[Route('/contact', name: 'app_contact')]
     public function contact(HoursRepository $hoursRepository): Response
     {
-        $hours = traitHours::getHours($hoursRepository);
+        $hours = $this->repositoryHours->findAll();
         return $this->render('main/contact.html.twig');
     }
-
-
-
-    // #[Route('/', name: '')]
-    // public function footer(HoursRepository $hoursRepository): Response
-    // {
-
-    //     return $this->render('footer/footer.html.twig', [
-    //         "hours" => $hoursRepository->findAll()
-    //     ]);
-    // }
-
 
     #[Route('/avis', name: 'app_avis')]
     public function avis(EntityManagerInterface $em, Request $request): Response
@@ -133,10 +131,12 @@ class MainController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+            $avis->setIsactive(false);
             $em->persist($avis);
             $em->flush();
             return $this->redirectToRoute('app_main');
         }
+        $hours = $this->repositoryHours->findAll();
 
         return $this->render('main/avis.html.twig', compact('form'));
     }

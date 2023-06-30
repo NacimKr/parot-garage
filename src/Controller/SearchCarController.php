@@ -35,12 +35,9 @@ class SearchCarController extends AbstractController
         $kilometrage = $request->get('kilometrage');
         $prix = $request->get('prix');
         $annee = $request->get('annee');
-        dump($marque);
-        dump($kilometrage);
-        dump($prix);
-        dump($annee);
 
-        $cars = $carRepository->findByCars2($marque, $kilometrage, $prix, $annee, 1);
+        //$cars = $carRepository->findByCars2($marque, $kilometrage, $prix, $annee, true);
+        $cars = $carRepository->findByCars2($marque, intval($kilometrage), intval($annee), intval($prix));
 
         if($request->get('ajax')){
             return new JsonResponse([

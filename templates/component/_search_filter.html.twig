@@ -12,7 +12,7 @@
             <p>{{car.annee}}</p>
             
             {# <form action="{{ path('app_change_visibility', {"id":car.id}) }}" method="POST">                  #}
-                {% if car.isActive %}
+                {% if car.is_active %}
                     <a href="{{path('app_change_visibility', {id:car.id})}}" class="btn btn-primary" data-index={{car.id}} id="isActive" data-isActive=true>Active</a>
                 {% else%}
                     <a href="{{path('app_change_visibility', {id:car.id})}}"  class="btn btn-danger" data-index={{car.id}} id="isActive" data-isActive=false>Disabled</a>

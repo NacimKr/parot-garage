@@ -40,30 +40,32 @@ class CarRepository extends ServiceEntityRepository
     }
 
     public function findByCars(
-        ?string $value = null, 
-        ?int $kilometrage = null,
-        ?int $annee = null,
-        ?int $prix = null,
+        ?string $marque, 
+        ?int $kilometrage,
+        ?int $annee,
+        ?int $prix,
     ):array
     {
         $cars = $this->createQueryBuilder("c");
 
         //Utiliser la clause LIKE pour voir s'il contient le mot recherhces
-        if($value !== null){
+        if(isset($marque)){
             //Rechercuqe par nom
             $cars->andWhere('c.marque LIKE :val')
-                ->setParameter(':val', "%{$value}%");
-        }elseif(isset($kilometrage)){
+                ->setParameter(':val', "%".$marque."%");
+        }
+        
+        if(isset($kilometrage)){
             //Rechercuqe par kilometrage
-            $cars->andWhere('c.kilometrage <= :val')
+            $cars->andWhere('c.kilometrage >= :val')
                 ->setParameter(':val', $kilometrage);
         }elseif(isset($annee)){
             //Rechercuqe par année
-            $cars->andWhere('c.annee <= :val')
+            $cars->andWhere('c.annee >= :val')
                 ->setParameter(':val', $annee);
         }elseif(isset($prix)){
             //Rechercuqe par prix
-            $cars->andWhere('c.prix <= :val')
+            $cars->andWhere('c.prix >= :val')
                 ->setParameter(':val', $prix);
         }
     
@@ -74,39 +76,31 @@ class CarRepository extends ServiceEntityRepository
 
 
     public function findByCars2(
-        ?string $marque = null, 
-        ?int $kilometrage = null,
-        ?int $annee = null,
-        ?int $prix = null,
+        ?string $marque, 
+        ?int $kilometrage,
+        ?int $annee,
+        ?int $prix,
     ):array
     {
-        $cars = $this->createQueryBuilder("c")
-                ->andWhere('c.isActive = :val')
-                ->setParameter(':val', 1);
+        $conn = $this->getEntityManager()->getConnection();
 
-        //Utiliser la clause LIKE pour voir s'il contient le mot recherches
-        if(isset($marque)){
-            //Recherche par nom
-            $cars->andWhere('c.marque LIKE :marque')
-                ->setParameter('marque', "%".$marque."%");
-        }
-        
-        if(isset($kilometrage)){
-            //Recherche par kilometrage
-            $cars->andWhere('c.kilometrage >= :kilometrage')
-                ->setParameter(':kilometrage', $kilometrage);
-        }elseif(isset($annee)){
-            //Recherche par année
-            $cars->andWhere('c.annee >= :annee')
-                ->setParameter(':annee', $annee);
-        }elseif(isset($prix)){
-            //Recherche par prix
-            $cars->andWhere('c.prix >= :prix')
-                ->setParameter(':prix', $prix);
-        }
-    
-        $cars = $cars->getQuery()->getResult();
-        return $cars;
+        $sql = '
+            SELECT * FROM car c
+            WHERE c.kilometrage > :kilometrage AND 
+            c.annee > :annee AND c.prix > :prix AND c.is_active = :isActive
+            ';
+
+        $resultSet = $conn->executeQuery($sql, 
+            [
+                'kilometrage' => $kilometrage,
+                'annee' => $annee,
+                'prix' => $prix,
+                'isActive' => 1
+            ]
+        );
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
     }
 
 //    /**

@@ -74,7 +74,7 @@ class CarRepository extends ServiceEntityRepository
 
 
     public function findByCars2(
-        ?string $value = null, 
+        ?string $marque = null, 
         ?int $kilometrage = null,
         ?int $annee = null,
         ?int $prix = null,
@@ -85,10 +85,10 @@ class CarRepository extends ServiceEntityRepository
                 ->setParameter(':val', 1);
 
         //Utiliser la clause LIKE pour voir s'il contient le mot recherches
-        if($value !== null){
+        if(isset($marque)){
             //Recherche par nom
-            $cars->andWhere('c.marque LIKE :val')
-                ->setParameter(':val', "%{$value}%");
+            $cars->andWhere('c.marque LIKE :marque')
+                ->setParameter('marque', "%".$marque."%");
         }elseif(isset($kilometrage)){
             //Recherche par kilometrage
             $cars->andWhere('c.kilometrage <= :kilometrage')

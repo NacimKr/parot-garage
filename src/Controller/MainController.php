@@ -50,8 +50,8 @@ class MainController extends AbstractController
         // dump($annee);
         
         $hours = $this->repositoryHours->findAll();
-        // $services = $servicesRepository->findAll();
-        // $avis = $avisRepository->findBy(['isactive' => true]);
+        $services = $servicesRepository->findAll();
+        $avis = $avisRepository->findBy(['isactive' => true]);
         $cars = $carRepository->findByCars($marque, $kilometrage, $annee, $prix);
 
         if($request->get('ajax')){
@@ -61,7 +61,7 @@ class MainController extends AbstractController
         }
 
         return $this->render('main/index.html.twig', compact(
-            'cars', "hours"
+            'cars', "hours", "services", "avis"
         ));
     }
 
@@ -79,12 +79,25 @@ class MainController extends AbstractController
 
 
     #[Route('/change/visibility/{id}', name: 'app_change_visibility', methods:["GET","POST"])]
-    public function changeVisibility(Request $request,CarRepository $carRepository, $id, EntityManagerInterface $em):JsonResponse
+    public function changeVisibility(
+        Request $request,
+        CarRepository $carRepository, 
+        ServicesRepository $servicesRepository,
+        AvisRepository $avisRepository,
+        HoursRepository $hoursRepository,
+        $id, 
+        EntityManagerInterface $em)
     {
         $cars = $carRepository->find($id);
         $hours = $this->repositoryHours->findAll();
         $getValue = json_decode($request->getContent());
+
+                
+        $hours = $this->repositoryHours->findAll();
+        $services = $servicesRepository->findAll();
+        $avis = $avisRepository->findBy(['isactive' => true]);
         $cars->setIsActive(!$cars->isIsActive());
+
         $em->persist($cars);
         $em->flush();
 

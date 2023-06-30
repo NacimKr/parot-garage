@@ -36,8 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(function(data) {
           // Gérer la réponse du serveur (si nécessaire)
-          console.log(data.cars.isActive)
-
+          console.log(data.cars)
           btn.setAttribute("data-isactive", data.cars.isActive)
           btn.setAttribute("class", data.cars.isActive ? 'btn btn-primary' : "btn btn-danger")
           btn.innerText = data.cars.isActive ? "Active" : "Disabled"
@@ -79,7 +78,6 @@ document.addEventListener('DOMContentLoaded', function() {
       })
       .then(data => {
         const contentCars = document.getElementById('content-cars');
-        console.log(data)
         contentCars.innerHTML = data.content
       })
       .catch(function(error) {

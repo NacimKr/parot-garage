@@ -51,15 +51,15 @@ class CarRepository extends ServiceEntityRepository
         $sql = '
             SELECT * FROM car c
             WHERE c.kilometrage >= :kilometrage AND 
-            c.annee >= :annee AND c.prix >= :prix AND 
-            c.marque LIKE :marque AND c.is_active IS NOT NULL
-            ';
+            c.annee >= :annee AND c.prix >= :prix AND
+            marque LIKE :marque
+        ';
 
         $resultSet = $conn->executeQuery($sql, 
             [
-                'kilometrage' => $kilometrage,
-                'annee' => $annee,
-                'prix' => $prix,
+                'kilometrage' => intval($kilometrage),
+                'annee' => intval($annee),
+                'prix' => intval($prix),
                 'marque' => "%".$marque."%",
             ]
         );
@@ -81,8 +81,8 @@ class CarRepository extends ServiceEntityRepository
         $sql = '
             SELECT * FROM car c
             WHERE c.kilometrage >= :kilometrage AND 
-            c.annee >= :annee AND c.prix >= :prix AND 
-            c.is_active = :isActive AND marque LIKE :marque
+            c.annee >= :annee AND c.prix >= :prix AND
+            marque LIKE :marque AND c.is_active = :isActive
             ';
 
         $resultSet = $conn->executeQuery($sql, 

@@ -89,17 +89,19 @@ class CarRepository extends ServiceEntityRepository
             //Recherche par nom
             $cars->andWhere('c.marque LIKE :marque')
                 ->setParameter('marque', "%".$marque."%");
-        }elseif(isset($kilometrage)){
+        }
+        
+        if(isset($kilometrage)){
             //Recherche par kilometrage
-            $cars->andWhere('c.kilometrage <= :kilometrage')
+            $cars->andWhere('c.kilometrage >= :kilometrage')
                 ->setParameter(':kilometrage', $kilometrage);
         }elseif(isset($annee)){
             //Recherche par année
-            $cars->andWhere('c.annee <= :annee')
+            $cars->andWhere('c.annee >= :annee')
                 ->setParameter(':annee', $annee);
         }elseif(isset($prix)){
             //Recherche par prix
-            $cars->andWhere('c.prix <= :prix')
+            $cars->andWhere('c.prix >= :prix')
                 ->setParameter(':prix', $prix);
         }
     

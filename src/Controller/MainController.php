@@ -52,7 +52,7 @@ class MainController extends AbstractController
         $hours = $this->repositoryHours->findAll();
         $services = $servicesRepository->findAll();
         $avis = $avisRepository->findBy(['isactive' => true]);
-        $cars = $carRepository->findByCars($marque, $kilometrage, $annee, $prix);
+        $cars = $carRepository->findByCars2($marque, $kilometrage, $annee, $prix);
 
         if($request->get('ajax')){
             return new JsonResponse([

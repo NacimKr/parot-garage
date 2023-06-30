@@ -80,16 +80,17 @@ class CarRepository extends ServiceEntityRepository
 
         $sql = '
             SELECT * FROM car c
-            WHERE c.kilometrage >= :kilometrage AND 
+            WHERE c.is_active = :isActive AND 
+            c.kilometrage >= :kilometrage AND 
             c.annee >= :annee AND c.prix >= :prix AND
-            marque LIKE :marque AND c.is_active = :isActive
+            marque LIKE :marque  
             ';
 
         $resultSet = $conn->executeQuery($sql, 
             [
-                'kilometrage' => $kilometrage,
-                'annee' => $annee,
-                'prix' => $prix,
+                'kilometrage' => intval($kilometrage),
+                'annee' => intval($annee),
+                'prix' => intval($prix),
                 'isActive' => 1,
                 'marque' => "%".$marque."%",
             ]

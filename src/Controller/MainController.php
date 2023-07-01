@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Avis;
 use App\Entity\Car;
+use App\Entity\Contact;
 use App\Entity\Employee;
 use App\Form\AvisType;
 use App\Form\CarType;
+use App\Form\ContactType;
 use App\Form\EmployeeType;
 use App\Trait\traitHours;
 use App\Form\SearchType;
@@ -20,7 +22,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 
 class MainController extends AbstractController
 {
@@ -129,10 +134,45 @@ class MainController extends AbstractController
 
 
     #[Route('/contact', name: 'app_contact')]
-    public function contact(HoursRepository $hoursRepository): Response
+    public function contact(
+        Request $request, 
+        EntityManagerInterface $em, 
+        HoursRepository $hoursRepository,
+        MailerInterface $mailer
+    ): Response
     {
+        $contact = new Contact();
+
+        $form = $this->createForm(ContactType::class, $contact);
+        $hours = $hoursRepository->findAll();
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $em->persist($contact);
+            $em->flush();
+            //Email a envoyé
+            $email = (new TemplatedEmail())
+                ->from(!$contact->getEmail() ? "fabien@example.com" : $contact->getEmail())
+                ->to('info-contact@garage-parot.com')
+                ->subject('Info Email')
+                ->htmlTemplate('email/email.html.twig')
+                
+                // pass variables (name => value) to the template
+                ->context([
+                    'expiration_date' => new \DateTime('+7 days'),
+                    'contact' => $contact
+                ]);
+    
+            $mailer->send($email);
+            
+            return $this->redirectToRoute('app_main');
+        }
+
+        
+
         $hours = $this->repositoryHours->findAll();
-        return $this->render('main/contact.html.twig');
+        return $this->render('main/contact.html.twig', compact('form', "hours"));
     }
 
     #[Route('/avis', name: 'app_avis')]

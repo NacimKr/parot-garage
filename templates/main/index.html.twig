@@ -4,8 +4,8 @@
 
 {% block body %}
     {% if is_granted('ROLE_ADMIN') %}
-        <h1>Admin</h1>
         <div>
+            <h1>Ajout</h1>
             <div>
                 <a href="{{path('app_add_cars')}}">Ajouter un véhicules d’occasion</a>
             </div>
@@ -13,10 +13,17 @@
                 <a href="{{path('app_add_services')}}">Ajouter un services à proposer</a>
             </div>
             <div>
-                <a href="{{path('app_manage_avis')}}">Gérer les avis</a>
+                <a href="{{path('app_create_account')}}">Créer un compte</a>
+            </div>
+        </div>
+
+        <h1>Gérer le contenus</h1>
+        <div>
+            <div>
+                <a href="{{path('app_list_cars')}}">Liste des véhicules</a>
             </div>
             <div>
-                <a href="{{path('app_create_promotion')}}">Créer une promotion</a>
+                <a href="{{path('app_list_services')}}">Liste des services</a>
             </div>
             <div>
                 <a href="{{path('app_modify_hours')}}">Modifier les horaires d’ouvertures</a>

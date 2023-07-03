@@ -14,7 +14,9 @@ use App\Form\HoursType;
 use App\Form\PromotionType;
 use App\Form\ServiceType;
 use App\Repository\AvisRepository;
+use App\Repository\CarRepository;
 use App\Repository\HoursRepository;
+use App\Repository\ServicesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -80,6 +82,54 @@ class AdminController extends AbstractController
     }
 
 
+    #[Route('/list/cars', name:"app_list_cars")]
+    public function listCars(CarRepository $carRepository):Response
+    {
+        $cars = $carRepository->findAll();
+        return $this->render('admin/list-cars.html.twig', compact('cars'));
+    }
+
+
+    #[Route('/list/cars/{id}', name:"app_modify_cars")]
+    public function modifyCars(Car $car, Request $request, EntityManagerInterface $em):Response
+    {
+        $form = $this->createForm(CarType::class, $car);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $em->persist($data);
+            $em->flush();
+            return $this->redirectToRoute('app_list_cars');
+        }
+
+        return $this->render('admin/modify-cars.html.twig', compact('car','form'));
+    }
+
+
+    #[Route('/delete/cars/{id}', name:"app_delete_cars")]
+    public function deleteCars(Car $car, Request $request, EntityManagerInterface $em):Response
+    {
+        $em->remove($car);
+        $em->flush();
+        return $this->redirectToRoute('app_list_cars');
+
+        return $this->render('admin/modify-cars.html.twig', compact('car','form'));
+    }
+
+
+
+
+
+    #[Route('/list/services', name: 'app_list_services')]
+    public function listServices(ServicesRepository $servicesRepository):Response
+    {
+        $services = $servicesRepository->findAll();
+        return $this->render('admin/list-services.html.twig', compact('services'));
+    }
+
+
+
     #[Route('/add/services', name: 'app_add_services')]
     public function addServices(EntityManagerInterface $em, Request $request): Response
     {
@@ -98,6 +148,38 @@ class AdminController extends AbstractController
             'form' => $form,
         ]);
     }
+
+
+    #[Route('/list/services/{id}', name:"app_modify_services")]
+    public function modifySerices(Services $service, Request $request, EntityManagerInterface $em):Response
+    {
+        $form = $this->createForm(ServiceType::class, $service);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $em->persist($data);
+            $em->flush();
+            return $this->redirectToRoute('app_list_services');
+        }
+
+        return $this->render('admin/modify-services.html.twig', compact('service','form'));
+    }
+
+
+
+    #[Route('/delete/services/{id}', name:"app_delete_services")]
+    public function deleteServices(Services $service, Request $request, EntityManagerInterface $em):Response
+    {
+        $em->remove($service);
+        $em->flush();
+        return $this->redirectToRoute('app_list_services');
+
+        return $this->render('admin/modify-services.html.twig', compact('service','form'));
+    }
+
+
+
 
 
     #[Route('/manage/avis', name: 'app_manage_avis')]

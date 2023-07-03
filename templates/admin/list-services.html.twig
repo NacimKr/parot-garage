@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Garage Parot{% endblock %}
+
+{% block body %}
+    <table class="table table-light table-hover">
+        <thead class="table-secondary">
+            <tr class="text-center">
+                <th>Nom</th>
+                <th>prix</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for service in services %}
+                <tr class="text-center">
+                    <td>{{service.nom}}</td>
+                    <td>{{service.prix}}€</td>
+                    <td>{{service.description}}</td>
+                    <td>
+                        <a href="{{path('app_modify_services', {id:service.id})}}" class="btn btn-warning">Modifier</a>
+                        <a href="{{path('app_delete_services', {id:service.id})}}" class="btn btn-danger">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

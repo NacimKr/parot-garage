@@ -6,7 +6,14 @@
     <h1>Recherche de véhicule</h1>
         {% include "./component/_search_data.html.twig" %}
         
-        <div class="d-flex flex-wrap gap-4 justify-content-center" id="content-cars">
+        <div class="d-flex flex-wrap gap-4 justify-content-center mt-4" id="content-cars">
             {% include "./component/_search_filter.html.twig" %}
         </div>
+
+          <ul class="pagination justify-content-center">
+            <li class="page-item">
+                    {{ knp_pagination_render(cars) }}
+            </li>
+        </ul>
+
 {% endblock %}

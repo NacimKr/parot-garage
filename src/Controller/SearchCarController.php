@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use Knp\Component\Pager\PaginatorInterface;
 use App\Repository\AvisRepository;
 use App\Repository\CarRepository;
 use App\Repository\HoursRepository;
 use App\Repository\ServicesRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +29,9 @@ class SearchCarController extends AbstractController
         CarRepository $carRepository, 
         ServicesRepository $servicesRepository,
         AvisRepository $avisRepository,
-        Request $request
+        Request $request,
+        EntityManagerInterface $em,
+        PaginatorInterface $paginator
     ): Response
     {
         //Je recupère les valeurs de mes filtres
@@ -36,8 +40,14 @@ class SearchCarController extends AbstractController
         $prix = $request->get('prix');
         $annee = $request->get('annee');
 
-        //$cars = $carRepository->findByCars2($marque, $kilometrage, $prix, $annee, true);
-        $cars = $carRepository->findByCars2($marque, intval($kilometrage), intval($annee), intval($prix));
+        $dql   = "SELECT a FROM AcmeMainBundle:Article a";
+        $query = $em->createQuery($dql);
+
+        $cars = $paginator->paginate(
+            $carRepository->findByCars2($marque, intval($kilometrage), intval($annee), intval($prix)),
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
 
         if($request->get('ajax')){
             return new JsonResponse([

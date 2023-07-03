@@ -3,8 +3,13 @@
 {% block title %}Contact{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1 class="my-4">Contact</h1>
+    <div style="width:100%; position:relative">
+        <img src="{{asset('img/photo-garage-3.png')}}" style="width:100%; height:650px; object-fit:cover" alt="">
+        <div style="position:absolute; top:30%; right:10%;">
+            <h1 style="text-align:right;" class="text-light">Que souhaitez-vous nous dire ?</h1>
+        </div>
+    </div>
+    <div class="container my-4">
         {{form_start(form)}}
             {{form_widget(form)}}
         {{form_end(form)}}

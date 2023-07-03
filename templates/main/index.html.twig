@@ -4,37 +4,64 @@
 
 {% block body %}
     {% if is_granted('ROLE_ADMIN') %}
-        <div>
-            <h1>Ajout</h1>
-            <div>
-                <a href="{{path('app_add_cars')}}">Ajouter un véhicules d’occasion</a>
+    <div style="width:100%; position:relative">
+        <img src="{{asset('img/photo-garage-3.png')}}" style="width:100%; height:550px; object-fit:cover" alt="">
+        <div style="position:absolute; top:30%; right:10%;">
+            <h1 style="text-align:right;" class="text-light">Que souhaitez-vous faire ?</h1>
+        </div>
+    </div>
+    <div class="container my-5">
+        <h1>Ajout</h1>
+        <div class="d-flex gap-4 my-4">
+            <div class="card">
+                <div class="card-body">
+                    <a href="{{path('app_add_cars')}}" class="fs-3 text-decoration-none">Ajouter un véhicules d’occasion</a>
+                </div>
             </div>
-            <div>
-                <a href="{{path('app_add_services')}}">Ajouter un services à proposer</a>
+            <div class="card">
+                <div class="card-body">
+                    <a href="{{path('app_add_services')}}" class="fs-3 text-decoration-none">Ajouter un services à proposer</a>
+                </div>
             </div>
-            <div>
-                <a href="{{path('app_create_account')}}">Créer un compte</a>
+            <div class="card">
+                <div class="card-body">
+                    <a href="{{path('app_create_account')}}" class="fs-3 text-decoration-none">Créer un compte</a>
+                </div>
             </div>
         </div>
 
         <h1>Gérer le contenus</h1>
-        <div>
-            <div>
-                <a href="{{path('app_list_cars')}}">Liste des véhicules</a>
-            </div>
-            <div>
-                <a href="{{path('app_list_services')}}">Liste des services</a>
-            </div>
-            <div>
-                <a href="{{path('app_modify_hours')}}">Modifier les horaires d’ouvertures</a>
-            </div>
-            <div>
-                <a href="{{path('app_create_account')}}">Créer un compte</a>
+        <div class="d-flex gap-4 my-4">
+        <div class="card">
+            <div class="card-body">
+                <a href="{{path('app_list_cars')}}" class="fs-3 text-decoration-none">Liste des véhicules</a>
             </div>
         </div>
+        <div class="card">
+            <div class="card-body">
+                <a href="{{path('app_list_services')}}" class="fs-3 text-decoration-none">Liste des services</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <a href="{{path('app_modify_hours')}}" class="fs-3 text-decoration-none">Modifier les horaires d’ouvertures</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <a href="{{path('app_create_account')}}" class="fs-3 text-decoration-none">Créer un compte</a>
+            </div>
+        </div>
+        </div>
+    </div>
 
     {% elseif is_granted('ROLE_EMPLOYEE') %}
-        <h1>Employee</h1>
+        <div style="width:100%; position:relative">
+            <img src="{{asset('img/photo-garage-3.png')}}" style="width:100%; height:550px; object-fit:cover" alt="">
+            <div style="position:absolute; top:30%; right:10%;">
+                <h1 style="text-align:right;" class="text-light">Que souhaitez-vous faire ?</h1>
+            </div>
+        </div>
         {% include "./component/_search_data.html.twig" %}
         
         <div class="d-flex flex-wrap gap-4 justify-content-center" id="content-cars">
@@ -42,9 +69,9 @@
         </div>
     {% else %}
         <div style="width:100%; position:relative">
-            <img src="{{asset('img/photo-garage-3.png')}}" style="opacity: 0.5; width:100%; height:500px" alt="">
+            <img src="{{asset('img/photo-garage-3.png')}}" style="width:100%; height:650px; object-fit:cover" alt="">
             <div style="position:absolute; top:30%; right:10%;">
-                <h1 style="text-align:right">La qualité au délà de l’excellence <br/>
+                <h1 style="text-align:right;" class="text-light">La qualité au délà de l’excellence <br/>
                 Notre objectifs et votre securité routière </h1>
                 <a href="{{path('app_contact')}}" class="btn btn-danger float-right">Nous contacter</a>
             </div>
@@ -64,13 +91,7 @@
                     </div>
                 {% endfor %}
             </div>
-
-            <div class="d-flex">
-                <div style="width:33%; background:#DD4141; height:400px">TEST</div>
-                <div style="width:33%; background:#454855; height:400px">TEST</div>
-                <div style="width:33%; background:#25272F; height:400px">TEST</div>
-            </div>
-
+            <hr>
             <h1 class="text-center my-4">Avis clients</h1>
             <div class="d-flex justify-content-center gap-3 flex-wrap my-5">
                 {% for avi in avis %}

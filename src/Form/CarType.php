@@ -33,7 +33,6 @@ class CarType extends AbstractType
             ])
             ->add('kilometrage')
             ->add('annee')
-            ->add('isActive')
             ->add('add',SubmitType::class)
         ;
     }

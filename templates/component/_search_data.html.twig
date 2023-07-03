@@ -3,23 +3,34 @@
 
 	{{ form_start(form) }} #}
         <div class="row">
-
-            <div class="d-flex justify-content-center gap-5 bg-secondary w-100">
+            <div class="d-flex justify-content-center gap-5 bg-secondary w-100 p-3">
                 <form id="filters">
+                    <div class="d-flex my-4 gap-4">
+                        <div>
+                            <div class="d-flex justify-content-between w-100">
+                                <label for="kilometrage">Kilométrage</label>
+                                <label class="value" data-text="kilometrage"></label>
+                            </div>
+                            <input type="range" class="form-range" id="input-search slider" name="kilometrage" min="10000" max="50000" value="25000" step="10">
+                        </div>
+                        <div>
+                            <div class="d-flex justify-content-between">
+                                <label for="prix">Prix</label>
+                                <label class="value" data-text="prix"></label>
+                            </div>
+                            <input type="range" class="form-range" id="input-search slider" name="prix" min="1000" max="10000" value="5000" step="10">
+                        </div>
+                        <div>
+                            <div class="d-flex justify-content-between">
+                                <label for="annee">Annéé</label>
+                                <label class="value" data-text="annee"></label>
+                            </div>
+                            <input type="range" class="form-range" id="input-search slider" name="annee" min="2000" max="2023" value="2017" step="1">
+                        </div>
+                    </div>
+
                     <div class="col">
                         <input type="text" class="form-control" id="input-search" name="marque" value="" />
-                    </div>
-                    <div>
-                        <label for="kilometrage">Kilométrage</label>
-                        <input type="range" id="input-search" name="kilometrage" min="10000" max="50000" value="25000">
-                    </div>
-                    <div>
-                        <label for="prix">Prix</label>
-                        <input type="range" id="input-search" name="prix" min="1000" max="10000" value="5000">
-                    </div>
-                    <div>
-                        <label for="annee">Annéé</label>
-                        <input type="range" id="input-search" name="annee" min="2000" max="2023" value="2017">
                     </div>
 
                     <div>

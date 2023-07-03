@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', function() {
       })
     })
 
-  
   formFilter.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -88,17 +87,24 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-    // fetch('/filter/search', {
-    //     method: 'POST',
-    //     body: JSON.stringify({ kilometrage: kilometrage.value }),
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     }
-    // })
-    // .then(function(response) {
-    //   // Gérer la réponse du serveur (si nécessaire)
-    //   console.log(response)
-    // })
-    // .catch(function(error) {
-    //   // Gérer les erreurs (si nécessaire)
-    // })
+
+const valueSearchInput = document.querySelectorAll(`.form-range`);
+const allValues = document.querySelectorAll(`.value`);
+  
+valueSearchInput[0].addEventListener('input', (e) => {
+  if(valueSearchInput[0].getAttribute('name') === "kilometrage"){
+    allValues[0].innerHTML = e.target.value
+  }
+});
+
+valueSearchInput[1].addEventListener('input', (e) => {
+  if(valueSearchInput[1].getAttribute('name') === "prix"){
+    allValues[1].innerHTML = e.target.value
+  }
+});
+
+valueSearchInput[2].addEventListener('input', (e) => {
+  if(valueSearchInput[2].getAttribute('name') === "annee"){
+    allValues[2].innerHTML = e.target.value
+  }
+});

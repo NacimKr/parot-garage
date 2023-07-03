@@ -1,15 +1,5 @@
 <div style="background:crimson; width:100%;">
-    <div style="display:flex; justify-content:center; align-items:center;">
-        <div style="margin:30px 10px 10px 10px">Recevez nos news en vous inscrivant à notre newsletter</div>
-        <form action="">
-            <div style="display:flex; justify-content:center; align-items:center;">
-            <input type="text" class="form-control w-75">
-            <button type="submit" class="btn btn-danger border">Soumettre</button>
-            </div>
-        </form>
-
-    </div>
-        <div class="container">
+        <div class="container py-5">
             <div class="d-flex justify-content-between text-light">
                 <div>
                     <img src="{{asset('img/logo-garage-V2.png')}}" alt="" style="width:350px">
@@ -19,7 +9,7 @@
                     <ul style="list-style:none">
                     {% if hours is defined  %}
                         {% for hour in hours %}
-                            {% if hour.matinOpen %}
+                            {% if hour.matinOpen or hour.apremOpen %}
                                 <li>
                                     {{hour.days.name}} : {{hour.matinOpen}} - {{hour.matinClose}}, {{hour.apremOpen}} - {{hour.apremClose}}
                                 </li>

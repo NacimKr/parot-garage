@@ -56,8 +56,10 @@ class SearchCarController extends AbstractController
             ]);
         }
 
+        $hours = $this->repositoryHours->findAll();
+
         return $this->render('search_car/index.html.twig', compact(
-            'cars'
+            'cars', 'hours'
         ));
     }
 }

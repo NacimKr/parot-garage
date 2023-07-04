@@ -52,7 +52,7 @@ class CarRepository extends ServiceEntityRepository
             SELECT * FROM car c
             WHERE c.kilometrage >= :kilometrage AND 
             c.annee >= :annee AND c.prix >= :prix AND
-            marque LIKE :marque
+            marque LIKE :marque ORDER BY c.kilometrage, c.annee, c.prix DESC
         ';
 
         $resultSet = $conn->executeQuery($sql, 
@@ -65,7 +65,7 @@ class CarRepository extends ServiceEntityRepository
         );
 
         // returns an array of arrays (i.e. a raw data set)
-        return $resultSet->fetchAllAssociative();;
+        return $resultSet->fetchAllAssociative();
     }
 
 

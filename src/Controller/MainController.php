@@ -191,6 +191,6 @@ class MainController extends AbstractController
         }
         $hours = $this->repositoryHours->findAll();
 
-        return $this->render('main/avis.html.twig', compact('form'));
+        return $this->render('main/avis.html.twig', compact('form', 'hours'));
     }
 }

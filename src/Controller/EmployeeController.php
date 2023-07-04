@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\SearchType;
+use App\Repository\AvisRepository;
 use App\Repository\CarRepository;
 use App\Repository\HoursRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,6 +27,15 @@ class EmployeeController extends AbstractController
         $hours = $this->repositoryHours->findAll();
         return $this->render('employee/index.html.twig', [
             'cars' => $cars
+        ]);
+    }
+
+    #[Route('/manage/avis', name: 'app_manage_avis')]
+    public function manageAvis(AvisRepository $avisRepository): Response
+    {
+        $avis = $avisRepository->findAll();
+        return $this->render('admin/manage-avis.html.twig', [
+            'avis' => $avis
         ]);
     }
 }

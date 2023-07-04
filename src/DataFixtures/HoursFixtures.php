@@ -15,16 +15,22 @@ class HoursFixtures extends Fixture implements OrderedFixtureInterface
         $days = $manager->getRepository(Week::class)->findAll();
 
         $date = new \DateTime();
-        $dt = $date->format('d/m/Y H:i:s');
+        $dt = $date->format('H:i');
 
-        for ($i=0; $i < 7; $i++) { 
-            $hours = new Hours();
-            $hours->setMatinOpen(substr($dt, 10))
-                ->setMatinClose(substr($dt, 10))
-                ->setApremOpen(substr($dt, 10))
-                ->setApremClose(substr($dt, 10))
-                ->setDays($days[$i]);
-            $manager->persist($hours);
+        for ($i=0; $i < 7; $i++) {
+            if($i < 6){
+                $hours = new Hours();
+                $hours->setMatinOpen($dt)
+                    ->setMatinClose($dt)
+                    ->setApremOpen($dt)
+                    ->setApremClose($dt)
+                    ->setDays($days[$i]);
+                if($i === 5){
+                    $hours->setApremOpen("Fermé")
+                        ->setApremClose("Fermé");
+                }
+                $manager->persist($hours);
+            } 
         }
         
         $manager->flush();

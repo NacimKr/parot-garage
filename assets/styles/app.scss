@@ -3,3 +3,38 @@
 body {
     background-color: lightgray;
 }
+
+.menu-burger{
+    display:none;
+}
+
+.headers{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 10px;
+}
+
+@media screen and (max-width:647px) {
+    .nav-bar{
+        display: block;
+        margin: 0px;
+    }
+
+    nav{
+        background: #333;
+    }
+
+    .headers{
+        height:0px;
+        margin:0px;
+    }
+
+    .logo{
+        display:block;
+        position: absolute;
+        top: 15%;
+        left:50%;
+        transform: translate(-50%,-50%);
+        z-index: 1;
+    }
+}

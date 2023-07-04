@@ -29,7 +29,8 @@ class HoursType extends AbstractType
             ->add('matin_open',null,[
                 'constraints' => [new Regex([
                     'pattern' => '/^([01]\d|2[0-3]):([0-5]\d)$/'
-                    ])],
+                ])],
+                'attr' => ['class' => "time"]
             ])
             ->add('matin_close',null,[
                 'constraints' => [new Regex([

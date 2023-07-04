@@ -40,7 +40,7 @@ class AdminController extends AbstractController
 
     
     #[Route('/add/cars', name: 'app_add_cars')]
-    public function addCars(Request $request, SluggerInterface $slugger, EntityManagerInterface $em): Response
+    public function addCars(Request $request, SluggerInterface $slugger, EntityManagerInterface $em, HoursRepository $hoursRepository): Response
     {
         $cars = new Car();
         $form = $this->createForm(CarType::class);
@@ -75,23 +75,27 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('app_main');
         }
 
+        $hours = $hoursRepository->findAll();
+
 
         return $this->render('admin/add.html.twig', [
             'form' => $form,
+            'hours'=> $hours
         ]);
     }
 
 
     #[Route('/list/cars', name:"app_list_cars")]
-    public function listCars(CarRepository $carRepository):Response
+    public function listCars(CarRepository $carRepository, HoursRepository $hoursRepository):Response
     {
         $cars = $carRepository->findAll();
-        return $this->render('admin/list-cars.html.twig', compact('cars'));
+        $hours = $hoursRepository->findAll();
+        return $this->render('admin/list-cars.html.twig', compact('cars', 'hours'));
     }
 
 
     #[Route('/list/cars/{id}', name:"app_modify_cars")]
-    public function modifyCars(Car $car, Request $request, EntityManagerInterface $em):Response
+    public function modifyCars(Car $car, Request $request, EntityManagerInterface $em, HoursRepository $hoursRepository):Response
     {
         $form = $this->createForm(CarType::class, $car);
         $form->handleRequest($request);
@@ -103,7 +107,9 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('app_list_cars');
         }
 
-        return $this->render('admin/modify-cars.html.twig', compact('car','form'));
+        $hours = $hoursRepository->findAll();
+
+        return $this->render('admin/modify-cars.html.twig', compact('car','form', 'hours'));
     }
 
 
@@ -122,16 +128,17 @@ class AdminController extends AbstractController
 
 
     #[Route('/list/services', name: 'app_list_services')]
-    public function listServices(ServicesRepository $servicesRepository):Response
+    public function listServices(ServicesRepository $servicesRepository, HoursRepository $hoursRepository):Response
     {
         $services = $servicesRepository->findAll();
-        return $this->render('admin/list-services.html.twig', compact('services'));
+        $hours = $hoursRepository->findAll();
+        return $this->render('admin/list-services.html.twig', compact('services', 'hours'));
     }
 
 
 
     #[Route('/add/services', name: 'app_add_services')]
-    public function addServices(EntityManagerInterface $em, Request $request): Response
+    public function addServices(EntityManagerInterface $em, Request $request, HoursRepository $hoursRepository): Response
     {
         $services = new Services();
         $form = $this->createForm(ServiceType::class, $services);
@@ -144,14 +151,17 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('app_main');
         }
 
+        $hours = $hoursRepository->findAll();
+
         return $this->render('admin/add-services.html.twig', [
             'form' => $form,
+            'hours' => $hours
         ]);
     }
 
 
     #[Route('/list/services/{id}', name:"app_modify_services")]
-    public function modifySerices(Services $service, Request $request, EntityManagerInterface $em):Response
+    public function modifySerices(Services $service, Request $request, EntityManagerInterface $em, HoursRepository $hoursRepository):Response
     {
         $form = $this->createForm(ServiceType::class, $service);
         $form->handleRequest($request);
@@ -163,7 +173,9 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('app_list_services');
         }
 
-        return $this->render('admin/modify-services.html.twig', compact('service','form'));
+        $hours = $hoursRepository->findAll();
+
+        return $this->render('admin/modify-services.html.twig', compact('service','form', 'hours'));
     }
 
 
@@ -179,18 +191,6 @@ class AdminController extends AbstractController
     }
 
 
-
-
-
-    #[Route('/manage/avis', name: 'app_manage_avis')]
-    public function manageAvis(AvisRepository $avisRepository): Response
-    {
-        $avis = $avisRepository->findAll();
-        return $this->render('admin/manage-avis.html.twig', [
-            'avis' => $avis
-        ]);
-    }
-
     #[Route('/manage/avis/{id}', name: 'app_manage_avis_modify', methods:["POST"])]
     public function manageAndModifyAvis(EntityManagerInterface $em, Avis $avis)
     {
@@ -205,25 +205,6 @@ class AdminController extends AbstractController
     }
 
 
-
-    #[Route('/create/promotion', name: 'app_create_promotion')]
-    public function createPromotion(Request $request,EntityManagerInterface $em): Response
-    {
-        $promotion = new Promotion();
-        $form = $this->createForm(PromotionType::class, $promotion);
-
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()){
-            $em->persist($promotion);
-            $em->flush();
-            return $this->redirectToRoute('app_main');
-        }
-
-        return $this->render('admin/create-promotion.html.twig', compact('form'));
-    }
-
-
     #[Route('/hours', name: 'app_modify_hours')]
     public function hours(HoursRepository $hoursRepository): Response
     {
@@ -235,7 +216,7 @@ class AdminController extends AbstractController
 
 
     #[Route('/hours/{id}', name: 'app_modify_hours_2')]
-    public function modifyHours(Hours $hours, Request $request, EntityManagerInterface $em): Response
+    public function modifyHours(Hours $hours, Request $request, EntityManagerInterface $em, HoursRepository $hoursRepository): Response
     {
         $form = $this->createForm(HoursType::class, $hours);
 
@@ -246,7 +227,8 @@ class AdminController extends AbstractController
             $em->flush();
             return $this->redirectToRoute('app_modify_hours');
         }
-
+        $hours = $hoursRepository->findAll();
+        
         return $this->render('admin/form-hours.html.twig',[
             "hours" => $hours,
             "form" => $form
@@ -255,12 +237,14 @@ class AdminController extends AbstractController
 
 
     #[Route('/create/account', name: 'app_create_account')]
-    public function createAccount(): Response
+    public function createAccount(HoursRepository $hoursRepository): Response
     {
         $form = $this->createForm(EmployeeType::class);
+        $hours = $hoursRepository->findAll();
 
         return $this->render('admin/create-account.html.twig', [
             'form' => $form,
+            'hours' => $hours
         ]);
     }
 }

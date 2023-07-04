@@ -34,8 +34,11 @@ class EmployeeController extends AbstractController
     public function manageAvis(AvisRepository $avisRepository): Response
     {
         $avis = $avisRepository->findAll();
+        $hours = $this->repositoryHours->findAll();
+        
         return $this->render('admin/manage-avis.html.twig', [
-            'avis' => $avis
+            'avis' => $avis,
+            "hours" => $hours
         ]);
     }
 }

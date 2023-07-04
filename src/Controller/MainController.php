@@ -77,7 +77,8 @@ class MainController extends AbstractController
     {
         $hours = $this->repositoryHours->findAll();
         return $this->render('component/_account_user.html.twig', [
-            "employee" => $employee
+            "employee" => $employee,
+            "hours" => $hours
         ]);
     }
 

@@ -3,12 +3,7 @@
 {% block title %}Garage Parot{% endblock %}
 
 {% block body %}
-    <div style="width:100%; position:relative">
-        <img src="{{asset('img/photo-garage-3.png')}}" style="width:100%; height:550px; object-fit:cover" alt="">
-        <div style="position:absolute; top:30%; right:10%;">
-            <h1 style="text-align:right;" class="text-light">Modifier supprimer un véhicules de votre choix</h1>
-        </div>
-    </div>
+{% include "./component/_header.html.twig" %}
     <table class="table table-light table-hover">
         <thead class="table-secondary">
             <tr class="text-center">

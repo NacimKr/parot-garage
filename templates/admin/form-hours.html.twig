@@ -3,16 +3,7 @@
 {% block title %}{% endblock %}
 
 {% block body %}
-    <div style="width:100%; position:relative">
-        <img src="{{asset('img/photo-garage-3.png')}}" style="width:100%; height:550px; object-fit:cover" alt="">
-        <div style="position:absolute; top:30%; right:10%;">
-            <h1 style="text-align:right;" class="text-light">
-                Modifier les horaires d'ouverture
-            </h1>
-            <p class="text-light fst-italic">Attention chaque valeur doit être entré sous ce format <span class="fw-bold fs-4">XX : XX</span></p>
-            <p class="text-light fst-italic">Exemple - <span class="fw-bold">08:00</span></p>
-        </div>
-    </div>  
+{% include "./component/_header.html.twig" %} 
     <div class="container my-4">
         {{form(form)}}
     </div>

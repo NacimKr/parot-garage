@@ -17,6 +17,7 @@ use App\Repository\CarRepository;
 use App\Repository\HoursRepository;
 use App\Repository\ServicesRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,29 +45,50 @@ class MainController extends AbstractController
         EntityManagerInterface $em,
         ServicesRepository $servicesRepository,
         AvisRepository $avisRepository,
-        HoursRepository $hoursRepository
+        HoursRepository $hoursRepository,
+        PaginatorInterface $paginator
         ): Response
     {
         //Je recupère les valeurs de mes filtres
+        $dql   = "SELECT a FROM AcmeMainBundle:Article a";
+        $query = $em->createQuery($dql);
+
         $marque = $request->get('marque');
-        $kilometrage = $request->get('kilometrage');
-        $prix = $request->get('prix');
-        $annee = $request->get('annee');
-        // dump($annee);
-        
-        $hours = $this->repositoryHours->findAll();
-        $services = $servicesRepository->findAll();
-        $avis = $avisRepository->findBy(['isactive' => true]);
-        $cars = $carRepository->findByCars2($marque, $kilometrage, $annee, $prix);
+        $kilometrageMin = $request->get('kilometrage-min');
+        $kilometrageMax = $request->get('kilometrage-max');
+        $anneeMin = $request->get('annee-min');
+        $anneeMax = $request->get('annee-max');
+        $prixMin = $request->get('prix-min');
+        $prixMax = $request->get('prix-max');
+
+        $cars = $paginator->paginate(
+            $carRepository->findByCars2(
+                $marque,
+                intval($kilometrageMin),
+                intval($kilometrageMax),
+                intval($anneeMin),
+                intval($anneeMax),
+                intval($prixMin),
+                intval($prixMax)
+            ),
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
+            
+
+        dump($cars);
 
         if($request->get('ajax')){
             return new JsonResponse([
-                'content' => $this->renderView('component/_search_filter.html.twig', compact('cars'))
+                'content' => $this->renderView('component/_search_filter.html.twig', compact('cars')),
+                'data' => $cars,
             ]);
         }
 
-        return $this->render('main/index.html.twig', compact(
-            'cars', "hours", "services", "avis"
+        $hours = $this->repositoryHours->findAll();
+
+        return $this->render('search_car/index.html.twig', compact(
+            'cars', 'hours'
         ));
     }
 

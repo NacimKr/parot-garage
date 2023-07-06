@@ -13,6 +13,12 @@
         </li>
       </ul>
 
+      {% if not app.user %}
+        <span class="navbar-text me-4">
+            <a class="btn btn-danger" href="{{path('app_login')}}">Connexion</a>
+        </span>
+     {% endif %}
+
       {% if is_granted('ROLE_EMPLOYEE') %}
         <span class="navbar-text me-4">
             <a class="nav-link text-decoration-none text-light" href="{{path('app_manage_avis')}}">Modérer les avis</a>

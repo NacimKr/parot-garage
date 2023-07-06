@@ -6,7 +6,7 @@ framework:
     handle_all_throwables: true
     
     profiler:
-        collect: false
+        collect: true
 
 
     # Enables session support. Note that the session will ONLY be started if you read or write from it.

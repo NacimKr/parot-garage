@@ -41,25 +41,32 @@ class CarRepository extends ServiceEntityRepository
 
     public function findByCars(
         ?string $marque, 
-        ?int $kilometrage,
-        ?int $annee,
-        ?int $prix,
+        ?int $kilometrageMin,
+        ?int $kilometrageMax,
+        ?int $anneeMin,
+        ?int $anneeMax,
+        ?int $prixMin,
+        ?int $prixMax,
     ):array
     {
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
-            SELECT * FROM car c
-            WHERE c.kilometrage >= :kilometrage AND 
-            c.annee >= :annee AND c.prix >= :prix AND
-            marque LIKE :marque ORDER BY c.kilometrage, c.annee, c.prix DESC
+            SELECT * FROM car WHERE is_active = 1 AND 
+            ( kilometrage BETWEEN :kilometrageMin AND :kilometrageMax ) AND 
+            ( annee BETWEEN :anneeMin AND :anneeMax ) AND
+            ( prix BETWEEN :prixMin AND :prixMax )
+            OR marque LIKE null
         ';
 
         $resultSet = $conn->executeQuery($sql, 
             [
-                'kilometrage' => intval($kilometrage),
-                'annee' => intval($annee),
-                'prix' => intval($prix),
+                'kilometrageMin' => intval($kilometrageMin),
+                'kilometrageMax' => intval($kilometrageMax),
+                'anneeMin' => intval($anneeMin),
+                'anneeMax' => intval($anneeMax),
+                'prixMin' => intval($prixMin),
+                'prixMax' => intval($prixMax),
                 'marque' => "%".$marque."%",
             ]
         );
@@ -70,34 +77,66 @@ class CarRepository extends ServiceEntityRepository
 
 
     public function findByCars2(
-        ?string $marque, 
-        ?int $kilometrage,
-        ?int $annee,
-        ?int $prix,
+        ?string $marque = null, 
+        ?int $kilometrageMin = null,
+        ?int $kilometrageMax = null,
+        ?int $anneeMin = null,
+        ?int $anneeMax = null,
+        ?int $prixMin = null,
+        ?int $prixMax = null,
     ):array
     {
-        $conn = $this->getEntityManager()->getConnection();
+        $qb = $this->createQueryBuilder('c')
+            ->andWhere('c.isActive = :active')
+            ->setParameter('active', 1);
 
-        $sql = '
-            SELECT * FROM car c
-            WHERE c.is_active = :isActive AND 
-            c.kilometrage >= :kilometrage AND 
-            c.annee >= :annee AND c.prix >= :prix AND
-            marque LIKE :marque'
-            ;
+        // if (!empty($kilometrageMin)) {
+        //     $qb->andWhere('c.kilometrage <= :kilometersMin')
+        //        ->setParameter('kilometersMin', $kilometrageMin);
+        // }
 
-        $resultSet = $conn->executeQuery($sql, 
-            [
-                'kilometrage' => intval($kilometrage),
-                'annee' => intval($annee),
-                'prix' => intval($prix),
-                'isActive' => 1,
-                'marque' => "%".$marque."%",
-            ]
-        );
+        // if (!empty($kilometrageMax)) {
+        //     $qb->andWhere('c.kilometrage >= :kilometersMax')
+        //        ->setParameter('kilometersMax', $kilometrageMax);
+        // }
 
-        // returns an array of arrays (i.e. a raw data set)
-        return $resultSet->fetchAllAssociative();
+        // if (!empty($anneeMin)) {
+        //     $qb->andWhere('c.annee <= :anneMin')
+        //        ->setParameter('anneMin', $anneeMin);
+        // }
+
+        // if (!empty($anneeMax)) {
+        //     $qb->andWhere('c.annee >= :anneeMax')
+        //        ->setParameter('anneeMax', $anneeMax);
+        // }
+
+        // if (!empty($prixMin)) {
+        //     $qb->andWhere('c.prix <= :prixMin')
+        //        ->setParameter('prixMin', $prixMin);
+        // }
+
+        // if (!empty($prixMax)) {
+        //     $qb->andWhere('c.prix >= :prixMax')
+        //        ->setParameter('prixMax', $prixMax);
+        // }
+
+        if (!empty($kilometrageMin) && !empty($kilometrageMax)) {
+            $qb->andWhere('c.kilometrage >= :kilometersMin AND c.kilometrage <= :kilometersMax')
+               ->setParameter('kilometersMin', $kilometrageMin)
+               ->setParameter('kilometersMax', $kilometrageMax);
+        }
+        if (!empty($anneeMin) && !empty($anneeMax)) {
+            $qb->andWhere('c.annee >= :anneMin AND c.annee <= :anneeMax')
+               ->setParameter('anneMin', $anneeMin)
+               ->setParameter('anneeMax', $anneeMax);
+        }
+        if (!empty($prixMin) && !empty($prixMax)) {
+            $qb->andWhere('c.prix >= :prixMin AND c.prix <= :prixMax')
+               ->setParameter('prixMin', $prixMin)
+               ->setParameter('prixMax', $prixMax);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
 //    /**

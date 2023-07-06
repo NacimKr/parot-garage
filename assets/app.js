@@ -23,8 +23,6 @@ $(document).ready(function() {
 
 document.addEventListener('DOMContentLoaded', function() {
     const btnActiveCars = document.querySelectorAll('#isActive');
-    const formFilter = document.querySelector('#filters');
-    const allInputs = document.querySelectorAll('#input-search');
 
     btnActiveCars.forEach(btn => {
       let valueOfBtn = btn.getAttribute("data-isactive")
@@ -51,73 +49,53 @@ document.addEventListener('DOMContentLoaded', function() {
           // Gérer la réponse du serveur (si nécessaire)
           console.log(data.cars)
           btn.setAttribute("data-isactive", data.cars.isActive)
-          btn.setAttribute("class", data.cars.isActive ? 'btn btn-primary' : "btn btn-danger")
+          btn.setAttribute("class", data.cars.isActive ? 'btn btn-primary btn-sm' : "btn btn-danger btn-sm")
           btn.innerText = data.cars.isActive ? "Active" : "Disabled"
         })
         .catch(function(error) {
           // Gérer les erreurs (si nécessaire)
+          console.log(error.message);
         });
       })
     })
 
-  formFilter.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    allInputs.forEach(input => {
-      //Je recupère les données du formulaire
-      const form = new FormData(formFilter);
-
-      //Je créer ma "queryString"
-      const params = new URLSearchParams();
-
-      form.forEach((value, key) => {
-        console.log(value)
-        params.append(key, value);
-      });
-      
-      //On recupère l'url active ( sur lequel on est)
-      const url = new URL(window.location.href);
-
-      //On lance la requête ajax
-      fetch(`${url.pathname}?${params.toString()}&ajax=1`, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(function(response) {
-        // Gérer la réponse du serveur (si nécessaire)
-        return response.json()
-      })
-      .then(data => {
-        const contentCars = document.getElementById('content-cars');
-        contentCars.innerHTML = data.content
-      })
-      .catch(function(error) {
-        // Gérer les erreurs (si nécessaire)
-        alert(error.message)
-      })
-    });
-  });
-});
 
 
-const valueSearchInput = document.querySelectorAll(`.form-range`);
-const allValues = document.querySelectorAll(`.value`);
+    //Systeme de recherche par filtres
+    const formFilter = document.querySelector('#filters');
+    const allInputs = document.querySelectorAll('#filters input');
+
+    formFilter.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // allInputs.forEach(input => {
+        // input.addEventListener('input', () => {
+          //On recupere les données du formulaire
+          const formData = new FormData(formFilter);
+          
+          //On créer l'url pour faire un fetch ensuite
+          const params = new URLSearchParams();
   
-valueSearchInput[0].addEventListener('input', (e) => {
-  if(valueSearchInput[0].getAttribute('name') === "kilometrage"){
-    allValues[0].innerHTML = e.target.value
-  }
-});
+          formData.forEach((value, key) => {
+            params.append(key, value)
+          });
+  
+          const Url = new URL(window.location.href);
+  
+          fetch(Url.pathname+"?"+params.toString()+"&ajax=1", {
+            headers:{
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(response=> response.json())
+          .then((data) => {
+            console.log(data)
+            document.getElementById('content-cars').innerHTML = data.content
+          })
+          .catch(err => console.error(err.message))
+        // });
+      // });
+    })
 
-valueSearchInput[1].addEventListener('input', (e) => {
-  if(valueSearchInput[1].getAttribute('name') === "prix"){
-    allValues[1].innerHTML = e.target.value
-  }
-});
 
-valueSearchInput[2].addEventListener('input', (e) => {
-  if(valueSearchInput[2].getAttribute('name') === "annee"){
-    allValues[2].innerHTML = e.target.value
-  }
 });

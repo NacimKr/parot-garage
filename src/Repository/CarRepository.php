@@ -136,6 +136,11 @@ class CarRepository extends ServiceEntityRepository
                ->setParameter('prixMax', $prixMax);
         }
 
+        if (!empty($marque)) {
+            $qb->andWhere('c.marque LIKE :marque')
+               ->setParameter('marque', "%".$marque."%");
+        }
+
         return $qb->getQuery()->getResult();
     }
 

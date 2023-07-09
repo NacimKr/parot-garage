@@ -60,8 +60,6 @@ class SearchCarController extends AbstractController
             10 /*limit per page*/
         );
 
-        dump($cars);
-
         if($request->get('ajax')){
             return new JsonResponse([
                 'content' => $this->renderView('component/_search_filter.html.twig', compact('cars')),
@@ -78,8 +76,9 @@ class SearchCarController extends AbstractController
     
     
     #[Route('/search/car/{id}', name: 'app_search_car_id', methods:['GET'])]
-    public function showCar(Car $car)
+    public function showCar(Car $car, HoursRepository $hoursRepository)
     {
-        return $this->render("search_car/show.html.twig",compact("car"));
+        $hours = $hoursRepository->findAll();
+        return $this->render("search_car/show.html.twig",compact("car", "hours"));
     }
 }

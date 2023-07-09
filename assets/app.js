@@ -21,6 +21,8 @@ $(document).ready(function() {
     $('[data-toggle="popover"]').popover();
 });
 
+const allInputs = document.querySelectorAll('#filters input');
+
 document.addEventListener('DOMContentLoaded', function() {
     const btnActiveCars = document.querySelectorAll('#isActive');
 
@@ -57,16 +59,13 @@ document.addEventListener('DOMContentLoaded', function() {
           console.log(error.message);
         });
       })
-    })
-
-
+    });
 
     //Systeme de recherche par filtres
     const formFilter = document.querySelector('#filters');
-    const allInputs = document.querySelectorAll('#filters input');
 
     formFilter.addEventListener('submit', (e) => {
-      e.preventDefault();
+      // e.preventDefault();
 
       // allInputs.forEach(input => {
         // input.addEventListener('input', () => {
@@ -91,11 +90,24 @@ document.addEventListener('DOMContentLoaded', function() {
           .then((data) => {
             console.log(data)
             document.getElementById('content-cars').innerHTML = data.content
+          
+            //On met a jour l'url
+            //pushsTATEMET A JOUR LES DIFFERENT HISTORIQUE
+            history.pushState({}, null, Url.pathname+"?"+params.toString())
           })
           .catch(err => console.error(err.message))
-        // });
-      // });
-    })
+          // });
+          // });
+        });
+      });
+      
+//Gerer le boutton de réinitialisation
+document.getElementById('init-filter').addEventListener('click', (e) => {
+  e.preventDefault();
+  allInputs.forEach(input => input.value = "");
+  const Url = new URL(window.location.href);
+  Url.search = "";
+  const result = Url.toString();
 
-
+  history.pushState({}, null, result)
 });

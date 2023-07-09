@@ -5,9 +5,16 @@
     ] 
 %}
 
-<div class="d-flex justify-content-center gap-5 w-100 p-3 position-absolute" style="top:45%">
+
+
+
+{# On créer une varable pour recupérer les paramétres de l'url avec app.request.query.all pour tout recupérer #}
+{% set queryParams = app.request.query.all %}
+{% set queryParamsString = queryParams|filter((value, key) => key != "page")|url_encode %}
+
+<div class="d-flex justify-content-center gap-5 w-100 p-3 position-absolute" style="top:35%">
     <form id="filters">
-        <div class="d-flex my-4 gap-4">
+        <div class="d-flex my-2 gap-4">
 
             {% for searchFilter in filtersSearch %}
                 <div>
@@ -15,20 +22,27 @@
                         <label for="kilometrage" class="text-light">{{searchFilter}}</label>
                         <label class="value" data-text="kilometrage"></label>
                     </div>
-                    <input type="number" class="form-control bg-light" id="input-search" name="{{searchFilter}}-min" placeholder="min" value=null>
-                    <input type="number" class="form-control bg-light mt-2" id="input-search" name="{{searchFilter}}-max" placeholder="max" value=null>
+                    <input type="number" class="form-control bg-light" id="input-search" name="{{searchFilter}}-min" placeholder="min" value=
+                        {queryParams[searchFilter~"-min"]}
+                    />
+                    <input type="number" class="form-control bg-light mt-2" id="input-search" name="{{searchFilter}}-max" placeholder="max" value=
+                        {queryParams[searchFilter~"-max"]}
+                    />
                 </div>
             {% endfor %}
 
         </div>
+        <button class="btn btn-danger btn-sm mb-2" id="init-filter">Reinitialiser les filtres</button>
 
-        <div class="d-flex">
-            <input type="text" class="form-control" id="input-search" name="marque" value="" />
-            <button type="submit" class="btn btn-primary">Search</button>
-        </div>
-
-        <div>
-            <input type="hidden" id="input-search bg-light" name="isactive" min="2000" max="2023" value="true">
+        <div class="d-flex gap-1">
+            <input 
+                type="text" 
+                class="form-control" 
+                id="input-search" 
+                name="marque"
+                  
+            />
+            <button type="submit" class="btn btn-primary">Rechercher</button>
         </div>
     </form>
 </div>

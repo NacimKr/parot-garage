@@ -5,7 +5,7 @@
         {% else %}
             <img src="{{ asset("img-cars/no-image-available.jpg") }}" class="card-img-top" alt="..." />
         {% endif %}
-        <div class="card-body">
+        <div class="card-body shadow">
             <h5 class="card-title">{{ car.marque }}</h5>
             <p class="card-text">{{car.prix}}€</p>
             <p>{{car.kilometrage}}km/h</p>

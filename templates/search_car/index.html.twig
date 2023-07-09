@@ -2,7 +2,11 @@
 
 {% block title %}Garage Parot{% endblock %}
 
-{% block body %}
+
+{% set queryParams = app.request.query.all %}
+{% set queryParamsString = queryParams|filter((value, key) => key != "page")|url_encode %}
+
+{% block body %}    
     {% include "./component/_header.html.twig" %}
     {% include "./component/_search_data.html.twig" %}
     
@@ -10,9 +14,20 @@
         {% include "./component/_search_filter.html.twig" %}
     </div>
 
-        <ul class="pagination justify-content-center my-5">
+    <ul class="pagination justify-content-center my-5" id="pagination-container">
+        <li class="page-item disabled">
+            <span class="page-link">Previous</span>
+        </li>
+        {% set number =  0%}
+        {% for href in knp_pagination_render(cars)|split(' ')|filter(value => value != "" and value starts with "href") %}
+        {% set number = number + 1 %}
         <li class="page-item">
-                {{ knp_pagination_render(cars) }}
+            <a class="page-link " href="{{href|slice(6,11)}}?page={{number}}&{{queryParamsString}}">{{number}}</a>
+        </li>
+        {% endfor %}
+        <li class="page-item">
+            <a class="page-link" href="#">Next</a>
         </li>
     </ul>
+
 {% endblock %}

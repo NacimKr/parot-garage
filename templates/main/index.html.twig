@@ -48,7 +48,7 @@
     {% elseif is_granted('ROLE_EMPLOYEE') %}
         <div style="width:100%; position:relative">
             <img src="{{asset('img/photo-garage-3.png')}}" style="width:100%; height:550px; object-fit:cover" alt="">
-            <div style="position:absolute; top:30%; right:10%;">
+            <div style="position:absolute; top:20%; right:10%;">
                 <h1 style="text-align:right;" class="text-light">
                     {{app.user.name}}, <br>
                     Que souhaitez-vous faire ?
@@ -78,7 +78,7 @@
         <div>
 
             <h1 class="text-center my-4">Service et réparation</h1>
-            <div class="d-flex justify-content-center gap-3 flex-wrap my-5">
+            <div class="d-flex justify-content-center gap-3 flex-wrap my-5 container">
                 {% for service in services %}
                     <div class="card" style="width: 18rem;">
                         <div class="card-body">
@@ -96,7 +96,7 @@
                     <button  class="btn btn-danger">Laisser un avis</button>
                 </a>
             </div>
-            <div class="d-flex justify-content-center gap-3 flex-wrap my-5">
+            <div class="d-flex justify-content-center gap-3 flex-wrap my-5 container">
                 {% for avi in avis %}
                     <div class="card" style="width: 18rem;">
                         <div class="card-body">

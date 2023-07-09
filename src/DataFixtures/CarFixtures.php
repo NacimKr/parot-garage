@@ -21,8 +21,11 @@ class CarFixtures extends Fixture
                 ->setImage('')
                 ->setKilometrage(rand(10000, 50000))
                 ->setAnnee(rand(2000, 2023))
-                ->setIsActive(rand(0,1) ? true : false);
-
+                ->setIsActive(rand(0,1) ? true : false)
+                ->setCarburant(rand(0,1) ? "Diesel" : "Essence")
+                ->setTransmission(rand(0,1) ? "Manuelle" : "Automatique")
+                ->setNbrSiege(rand(4,8))
+                ;
             $manager->persist($car);
             $manager->flush();
         }

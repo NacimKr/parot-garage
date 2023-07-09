@@ -86,9 +86,12 @@ class MainController extends AbstractController
         }
 
         $hours = $this->repositoryHours->findAll();
+        $services = $servicesRepository->findAll();
+        $avis = $avisRepository->findBy(['isactive' => true]);
+        $hours = $this->repositoryHours->findAll();
 
-        return $this->render('search_car/index.html.twig', compact(
-            'cars', 'hours'
+        return $this->render('main/index.html.twig', compact(
+            'cars', "hours", "services", "avis"
         ));
     }
 

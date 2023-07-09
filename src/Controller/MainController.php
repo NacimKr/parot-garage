@@ -213,6 +213,7 @@ class MainController extends AbstractController
             $avis->setIsactive(false);
             $em->persist($avis);
             $em->flush();
+            $this->addFlash('success', 'Votre avis à bien été pris en compte');
             return $this->redirectToRoute('app_main');
         }
         $hours = $this->repositoryHours->findAll();

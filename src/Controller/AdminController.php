@@ -37,7 +37,7 @@ class AdminController extends AbstractController
     }
 
     
-    #[Route('/add/cars', name: 'app_add_cars')]
+    #[Route('/add/cars', name: 'app_add_cars_admin')]
     public function addCars(Request $request, SluggerInterface $slugger, EntityManagerInterface $em, HoursRepository $hoursRepository): Response
     {
         $cars = new Car();
@@ -69,6 +69,7 @@ class AdminController extends AbstractController
 
             $em->persist($cars);
             $em->flush();
+            $this->addFlash('success', 'Votre voiture à bien été ajouté');
 
             return $this->redirectToRoute('app_main');
         }
@@ -83,7 +84,7 @@ class AdminController extends AbstractController
     }
 
 
-    #[Route('/list/cars', name:"app_list_cars")]
+    #[Route('/list/cars', name:"app_list_cars_admin")]
     public function listCars(CarRepository $carRepository, HoursRepository $hoursRepository):Response
     {
         $cars = $carRepository->findAll();
@@ -102,6 +103,7 @@ class AdminController extends AbstractController
             $data = $form->getData();
             $em->persist($data);
             $em->flush();
+            $this->addFlash('warning', 'Votre voiture à bien été modifié');
             return $this->redirectToRoute('app_list_cars');
         }
 
@@ -116,6 +118,7 @@ class AdminController extends AbstractController
     {
         $em->remove($car);
         $em->flush();
+        $this->addFlash('danger', 'Votre voitures à bien été supprimé');
         return $this->redirectToRoute('app_list_cars');
 
         return $this->render('admin/modify-cars.html.twig', compact('car','form'));
@@ -146,6 +149,7 @@ class AdminController extends AbstractController
             $data = $form->getData();
             $em->persist($data);
             $em->flush();
+            $this->addFlash('success', 'Votre nouveau service à bien été ajouté');
             return $this->redirectToRoute('app_main');
         }
 
@@ -168,6 +172,7 @@ class AdminController extends AbstractController
             $data = $form->getData();
             $em->persist($data);
             $em->flush();
+            $this->addFlash('warning', 'Service à bien été modifié');
             return $this->redirectToRoute('app_list_services');
         }
 
@@ -223,6 +228,7 @@ class AdminController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $em->persist($hours);
             $em->flush();
+            $this->addFlash('warning', 'Horaires à bien été modifié');
             return $this->redirectToRoute('app_modify_hours');
         }
         $hours = $hoursRepository->findAll();

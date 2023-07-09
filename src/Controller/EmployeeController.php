@@ -82,6 +82,7 @@ class EmployeeController extends AbstractController
 
             $em->persist($cars);
             $em->flush();
+            $this->addFlash('success', 'Votre voiture à bien été ajouté');
 
             return $this->redirectToRoute('app_main');
         }
@@ -117,6 +118,8 @@ class EmployeeController extends AbstractController
             $data = $form->getData();
             $em->persist($data);
             $em->flush();
+            $this->addFlash('warning', 'Votre voiture à bien été modifié');
+
             return $this->redirectToRoute('app_main');
         }
 

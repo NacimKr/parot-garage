@@ -77,6 +77,44 @@ class CarRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+
+
+    public function findByCarsAdmin(
+        ?string $marque = null, 
+        ?int $kilometrageMin = null,
+        ?int $kilometrageMax = null,
+        ?int $anneeMin = null,
+        ?int $anneeMax = null,
+        ?int $prixMin = null,
+        ?int $prixMax = null,
+    ):array
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        if (!empty($kilometrageMin) && !empty($kilometrageMax)) {
+            $qb->andWhere('c.kilometrage >= :kilometersMin AND c.kilometrage <= :kilometersMax')
+               ->setParameter('kilometersMin', $kilometrageMin)
+               ->setParameter('kilometersMax', $kilometrageMax);
+        }
+        if (!empty($anneeMin) && !empty($anneeMax)) {
+            $qb->andWhere('c.annee >= :anneMin AND c.annee <= :anneeMax')
+               ->setParameter('anneMin', $anneeMin)
+               ->setParameter('anneeMax', $anneeMax);
+        }
+        if (!empty($prixMin) && !empty($prixMax)) {
+            $qb->andWhere('c.prix >= :prixMin AND c.prix <= :prixMax')
+               ->setParameter('prixMin', $prixMin)
+               ->setParameter('prixMax', $prixMax);
+        }
+
+        if (!empty($marque)) {
+            $qb->andWhere('c.marque LIKE :marque')
+               ->setParameter('marque', "%".$marque."%");
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Car[] Returns an array of Car objects
 //     */

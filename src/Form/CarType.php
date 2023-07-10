@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Car;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,7 +24,7 @@ class CarType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '5M',
+                        'maxSize' => '8Mi',
                         'mimeTypes' => [
                             'image/*'
                         ],
@@ -33,7 +34,14 @@ class CarType extends AbstractType
             ])
             ->add('kilometrage')
             ->add('annee')
-            ->add('add',SubmitType::class)
+            ->add('carburant')
+            ->add('transmission')
+            ->add('nbr_siege')
+            ->add('is_active', CheckboxType::class, [
+                'label' => "Rendre visible le véhicule",
+                'required' => false
+            ])
+            ->add('Ajouter',SubmitType::class)
         ;
     }
 

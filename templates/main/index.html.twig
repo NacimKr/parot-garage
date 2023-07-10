@@ -58,7 +58,9 @@
         {% include "./component/_search_data.html.twig" %}
         
         {% if is_granted('ROLE_EMPLOYEE') %}
-            <a href="{{path('app_add_cars')}}" class="btn btn-danger">Ajouter un véhicule</a>
+            <div class="container d-flex justify-content-center mt-3">
+                <a href="{{path('app_add_cars')}}" class="btn btn-danger">Ajouter un véhicule</a>
+            </div>
         {% endif %}
 
         {% set queryParams = app.request.query.all %}

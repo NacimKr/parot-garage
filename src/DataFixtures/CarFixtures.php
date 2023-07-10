@@ -13,12 +13,14 @@ class CarFixtures extends Fixture
         // $product = new Product();
         // $manager->persist($product);
 
+        $voiture = ['voiture0','voiture1','voiture2','voiture3','voiture4','voiture5'];
+
         for($i=0; $i<150; $i++){
             $car = new Car();
 
             $car->setMarque('marque'.$i)
                 ->setPrix(rand(100,1000))
-                ->setImage('')
+                ->setImage($voiture[rand(0, count($voiture) -1)])
                 ->setKilometrage(rand(10000, 50000))
                 ->setAnnee(rand(2000, 2023))
                 ->setIsActive(rand(0,1) ? true : false)

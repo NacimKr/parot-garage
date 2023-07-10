@@ -16,12 +16,11 @@ class Car
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
     #[Assert\Length(
         min: 2,
         max: 50,
-        minMessage: 'Le service doit comporter au minimum 2 caractères',
-        maxMessage: 'Le service doit comporter au maximum 50 caractères',
+        minMessage: 'Le vehicule doit comporter au minimum 2 caractères',
+        maxMessage: 'Le vehicule doit comporter au maximum 50 caractères',
     )]
     private ?string $marque = null;
 
@@ -43,7 +42,7 @@ class Car
     #[ORM\Column]
     #[Assert\NotBlank]
     #[Assert\GreaterThanOrEqual(2000, message:"L'année doit être au délà de l'année 2000")]
-    #[Assert\LessThanOrEqual(2023, message:"L'année doit être en-dessous de 10000 km/h")]
+    #[Assert\LessThanOrEqual(2023, message:"L'année doit être en-dessous de l'année 2023")]
     private ?int $annee = null;
 
     #[ORM\Column]

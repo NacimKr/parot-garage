@@ -1,7 +1,7 @@
 {% for car in cars %}
     <div class="card" style="width: 18rem;">
         {% if car.image != "" %}
-            <img src="{{ asset("img-cars/"~car.image) }}" class="card-img-top" alt="..." />
+            <img src="{{ asset("img-cars/"~car.image~".jpg") }}" class="card-img-top" alt="..." />
         {% else %}
             <img src="{{ asset("img-cars/no-image-available.jpg") }}" class="card-img-top" alt="..." />
         {% endif %}
@@ -13,9 +13,9 @@
             
             {% if is_granted('ROLE_EMPLOYEE') %}
                 {% if car.isActive %}
-                    <a href="{{path('app_change_visibility', {id:car.id})}}" class="btn btn-primary btn-sm" data-index={{car.id}} id="isActive" data-isActive=true>Active</a>
+                    <a href="{{path('app_change_visibility', {id:car.id})}}" class="btn btn-primary btn-sm" data-index={{car.id}} id="isActive" data-isActive=true>Activé</a>
                 {% else%}
-                    <a href="{{path('app_change_visibility', {id:car.id})}}"  class="btn btn-danger btn-sm" data-index={{car.id}} id="isActive" data-isActive=false>Disabled</a>
+                    <a href="{{path('app_change_visibility', {id:car.id})}}"  class="btn btn-danger btn-sm" data-index={{car.id}} id="isActive" data-isActive=false>Desactivé</a>
                 {% endif %}
                 <div class="d-block mt-2">
                     <a class="btn btn-warning" href="{{path('app_modify_cars', {id:car.id})}}">Modifer</a>

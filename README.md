@@ -1,5 +1,7 @@
 # parot-garage
 
+## Pour consulter le diagramme des classes et ainsi que la maquette vous les trouverez dans le dossier documentation du projet ou en cliquant [ici](https://github.com/NacimKr/parot-garage/tree/main/documentation)
+
 ## Clonez le projet via la commande 
 ````
 git clone https://github.com/NacimKr/parot-garage.git

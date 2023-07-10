@@ -26,4 +26,4 @@ symfony serve
 > - Mot de passe : EmployeeGarage0905**
 
 
-##Pour consulter le diagramme des classes et ainsi que la maquette vous les trouverez dans le dossier documentation du projet
+## Pour consulter le diagramme des classes et ainsi que la maquette vous les trouverez dans le dossier documentation du projet

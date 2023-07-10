@@ -5,7 +5,7 @@ btnAvis.forEach(btn => {
     let valueOfBtn = btn.getAttribute("data-isactive")
     btn.addEventListener('click', (e) => {
         e.preventDefault();
-        fetch(`/admin/manage/avis/${btn.getAttribute('data-index')}`,{
+        fetch(`/employee/manage/avis/${btn.getAttribute('data-index')}`,{
             method:"POST",
             headers: {
                 'Content-Type': 'application/json'

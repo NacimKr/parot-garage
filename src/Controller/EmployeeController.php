@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Avis;
 use App\Entity\Car;
 use App\Form\CarType;
 use App\Form\SearchType;
@@ -48,6 +49,19 @@ class EmployeeController extends AbstractController
         ]);
     }
 
+
+    #[Route('/manage/avis/{id}', name: 'app_manage_avis_modify', methods:["POST"])]
+    public function manageAndModifyAvis(EntityManagerInterface $em, Avis $avis)
+    {
+        $avisChangeActive = $avis->isIsactive();
+        $avis = $avis->setIsactive(!$avisChangeActive);
+        $em->persist($avis);
+        $em->flush();
+
+        return $this->json([
+            "avis" => $avis
+        ]);
+    }
 
 
     #[Route('/add/cars', name: 'app_add_cars')]

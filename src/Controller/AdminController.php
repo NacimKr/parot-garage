@@ -227,18 +227,18 @@ class AdminController extends AbstractController
     }
 
 
-    #[Route('/manage/avis/{id}', name: 'app_manage_avis_modify', methods:["POST"])]
-    public function manageAndModifyAvis(EntityManagerInterface $em, Avis $avis)
-    {
-        $avisChangeActive = $avis->isIsactive();
-        $avis = $avis->setIsactive(!$avisChangeActive);
-        $em->persist($avis);
-        $em->flush();
+    // #[Route('/manage/avis/{id}', name: 'app_manage_avis_modify', methods:["POST"])]
+    // public function manageAndModifyAvis(EntityManagerInterface $em, Avis $avis)
+    // {
+    //     $avisChangeActive = $avis->isIsactive();
+    //     $avis = $avis->setIsactive(!$avisChangeActive);
+    //     $em->persist($avis);
+    //     $em->flush();
 
-        return $this->json([
-            "avis" => $avis
-        ]);
-    }
+    //     return $this->json([
+    //         "avis" => $avis
+    //     ]);
+    // }
 
 
     #[Route('/hours', name: 'app_modify_hours')]

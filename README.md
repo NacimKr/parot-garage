@@ -24,3 +24,6 @@ symfony serve
 ### Pour vous connectez en tant qu'employé :
 > - Login : employee@garage-parot.fr.com
 > - Mot de passe : EmployeeGarage0905**
+
+
+##Pour consulter le diagramme des classes et ainsi que la maquette vous les trouverez dans le dossier documentation du projet

@@ -26,3 +26,5 @@ symfony serve
 ### Pour vous connectez en tant qu'employé :
 > - Login : employee@garage-parot.fr.com
 > - Mot de passe : EmployeeGarage0905**
+
+###Si vous souhaitez revenir à l'ecran d'accueil cliquez sur le logo du garage en haut à gauche
